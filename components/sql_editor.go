@@ -287,7 +287,7 @@ func (e *SQLEditor) InputHandler() func(event *tcell.EventKey, setFocus func(p t
 		// --- 2. Autocomplete handling ---
 		if e.acVisible {
 			switch {
-			case event.Key() == tcell.KeyDown || event.Key() == tcell.KeyTab || event.Key() == tcell.KeyCtrlN:
+			case event.Key() == tcell.KeyDown || event.Key() == tcell.KeyCtrlN:
 				e.acSelected = min(e.acSelected+1, len(e.acItems)-1)
 				e.scrollAutocomplete()
 				return
@@ -1184,22 +1184,39 @@ func (e *SQLEditor) acceptCompletion() {
 	e.pushUndo()
 	completion := e.acItems[e.acSelected].Text
 
-	// Find start of current word
+	// Find start of the word being completed. For "table.col|" the whole
+	// "table." segment plus the (possibly empty) column prefix is replaced,
+	// so Enter works even when the cursor sits right after the dot.
 	text := e.GetText()
 	cursorPos := e.cursorByteOffset()
-	prefix := extractPrefix(text, cursorPos)
-	if prefix == "" {
+	prefix, tableName := extractCompletionContext(text, cursorPos)
+	if tableName == "" {
+		// Fall back to the hint captured when the popup was triggered (async
+		// column loading can leave the cursor in the same place but no dot).
+		tableName = e.acTableHint
+	}
+	if prefix == "" && tableName == "" {
 		e.acVisible = false
 		return
 	}
 
-	// Replace the prefix with the completion
-	prefixLen := len(prefix)
+	replaceLen := len(prefix)
+	if tableName != "" {
+		replaceLen = len(tableName) + 1 + len(prefix)
+	}
+
 	suffix := ""
-	if e.cx >= prefixLen {
+	if e.cx >= replaceLen {
+		// The whole token (including "table.") is on the current line.
 		suffix = e.lines[e.cy][e.cx:]
-		e.lines[e.cy] = e.lines[e.cy][:e.cx-prefixLen]
+		e.lines[e.cy] = e.lines[e.cy][:e.cx-replaceLen]
+	} else if e.cx >= len(prefix) {
+		// The bare prefix is on this line but the "table." part wraps from a
+		// previous line (rare): replace only the visible prefix.
+		suffix = e.lines[e.cy][e.cx:]
+		e.lines[e.cy] = e.lines[e.cy][:e.cx-len(prefix)]
 	} else {
+		// Prefix spans lines: consume the rest of this line.
 		e.lines[e.cy] = e.lines[e.cy][e.cx:]
 	}
 
@@ -1595,21 +1612,26 @@ func (e *SQLEditor) drawAutocomplete(screen tcell.Screen, x, y, width, height in
 				itemStyle = contentStyle.Background(selectedBg)
 			}
 
+			// Convert to runes so CJK (multi-byte UTF-8) text is drawn correctly;
+			// byte indexing would render each byte as a separate garbled character.
+			textRunes := []rune(item.Text)
+			descRunes := []rune(item.Description)
+
 			// Draw item text
 			textX := px - 1
-			if textX < len(item.Text) {
-				ch := rune(item.Text[textX])
+			if textX < len(textRunes) {
+				ch := textRunes[textX]
 				screen.SetContent(sx, sy, ch, nil, itemStyle)
 			} else if item.Description != "" {
-				descStart := len(item.Text) + 1
+				descStart := len(textRunes) + 1
 				if textX == descStart {
 					screen.SetContent(sx, sy, ' ', nil, itemStyle)
 				} else if textX == descStart+1 {
 					screen.SetContent(sx, sy, '-', nil, itemStyle.Foreground(app.Styles.AutocompleteSeparatorColor))
 				} else if textX > descStart+2 {
 					descIdx := textX - descStart - 3
-					if descIdx < len(item.Description) {
-						ch := rune(item.Description[descIdx])
+					if descIdx < len(descRunes) {
+						ch := descRunes[descIdx]
 						screen.SetContent(sx, sy, ch, nil, itemStyle.Foreground(app.Styles.AutocompleteDescriptionColor))
 					} else {
 						screen.SetContent(sx, sy, ' ', nil, itemStyle)
