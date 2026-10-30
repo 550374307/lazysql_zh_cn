@@ -1,5 +1,10 @@
 <a name="readme-top"></a>
 
+<!-- LANGUAGES -->
+<div align="center">
+  **简体中文** · <a href="README.en.md">English</a>
+</div>
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -16,112 +21,115 @@
   <h3 align="center">LAZYSQL</h3>
 
   <p align="center">
-        A cross-platform TUI database management tool written in Go.
+        一个用 Go 编写的跨平台 TUI 数据库管理工具。
   </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
 <details>
-  <summary>Table of Contents</summary>
+  <summary>目录</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#关于项目">关于项目</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#技术栈">技术栈</a></li>
       </ul>
     </li>
-    <li><a href="#features">Features</a></li>
+    <li><a href="#功能特性">功能特性</a></li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#快速开始">快速开始</a>
       <ul>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#安装">安装</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#manual-database-test-environment">Manual database test environment</a></li>
-    <li><a href="#result-and-network-semantics">Result and network semantics</a></li>
-    <li><a href="#commands">Commands</a></li>
-    <li><a href="#environment-variables">Environment variables</a></li>
-    <li><a href="#keybindings">Keybindings</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#可选遥测">可选遥测</a></li>
+    <li><a href="#配置">配置</a></li>
+    <li><a href="#使用">使用</a></li>
+    <li><a href="#支持">支持</a></li>
+    <li><a href="#命令">命令</a></li>
+    <li><a href="#环境变量">环境变量</a></li>
+    <li><a href="#快捷键">快捷键</a></li>
+    <li><a href="#示例连接-url">示例连接 URL</a></li>
+    <li><a href="#路线图">路线图</a></li>
+    <li><a href="#剪贴板支持">剪贴板支持</a></li>
+    <li><a href="#参与贡献">参与贡献</a></li>
+    <li><a href="#许可证">许可证</a></li>
+    <li><a href="#联系方式">联系方式</a></li>
+    <li><a href="#备选方案">备选方案</a></li>
   </ol>
 </details>
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+## 关于项目
 
 ![Product Name Screen Shot][product-screenshot1]
 ![Product Name Screen Shot][product-screenshot2]
 
-This project is heavily inspired by [Lazygit](https://github.com/jesseduffield/lazygit), which I think is the best TUI client for Git.
+这个项目的灵感主要来自 [Lazygit](https://github.com/jesseduffield/lazygit)，我认为它是 Git 最好的 TUI 客户端。
 
-I wanted to have a tool like that, but for SQL. I didn't find one that fits my needs, so I created one myself.
+我想要一个类似的工具，但用于 SQL。我没有找到符合需求的，所以自己造了一个。
 
-I live in the terminal, so if you are like me, this tool can become handy for you too.
+我整天生活在终端里，如果你也像我一样，这个工具对你也会很有用。
 
-This is my first Open Source project, also, this is my first Go project. I am not a brilliant programmer. I am just a typical JavaScript developer that wanted to learn a new language, I also wanted a TUI SQL Client, so blanca y en botella, leche! (white and bottled).
+这是我的第一个开源项目，也是我的第一个 Go 项目。我不是一个出色的程序员，只是一个想学一门新语言的普通 JavaScript 开发者，同时我也想要一个 TUI SQL 客户端，所以 blanca y en botella, leche!（白瓶装牛奶，顺理成章！）
 
-This project is in ALPHA stage, please feel free to complain about my spaghetti code.
+这个项目还处于 **ALPHA 阶段**，欢迎吐槽我的意大利面条式代码。
 
-I use Lazysql daily in my full-time job as a full-stack javascript developer in its current (buggy xD) state. So, the plan is to improve and fix my little boy as a side-project in my free time.
+我在全职工作中每天都在使用 Lazysql（目前还是带 bug 的状态 xD）。所以计划是在业余时间作为副项目不断改进和修复我的这个小家伙。
 
-### Built With
+### 技术栈
 
 ![Golang][golang-shield]
 ![Golang][tview-shield]
 
-## Features
+## 功能特性
 
-- [x] Cross-platform (macOS, Windows, Linux)
-- [x] Vim Keybindings
-- [x] Can manage multiple connections (Backspace)
-- [x] Tabs
-- [x] SQL Editor (CTRL + e)
+- [x] 跨平台（macOS、Windows、Linux）
+- [x] Vim 键位
+- [x] 支持管理多个连接（Backspace）
+- [x] 标签页
+- [x] SQL 编辑器（CTRL + e）
 
 <!-- GETTING STARTED -->
 
-## Getting Started
+## 快速开始
 
-### Installation
+### 安装
 
-#### Homebrew (macOS/Linux)
+#### Homebrew（macOS/Linux）
 
 ```bash
 brew install lazysql
 ```
 
-#### Install with go package manager
+#### 使用 Go 包管理器安装
 
 ```bash
 go install github.com/jorgerojas26/lazysql@latest
 ```
 
-#### Binary Releases
+#### 二进制发行版
 
-For Windows, macOS or Linux, you can download a binary release [here](https://github.com/jorgerojas26/lazysql/releases)
+对于 Windows、macOS 或 Linux，你可以从 [这里](https://github.com/jorgerojas26/lazysql/releases) 下载二进制发行版。
 
-#### Third party (maintained by the community)
+#### 第三方（社区维护）
 
-Arch Linux users can install it from the AUR with:
+Arch Linux 用户可以通过 AUR 安装：
 
 ```bash
 paru -S lazysql
 
 ```
 
-or
+或者
 
 ```bash
 yay -S lazysql
 
 ```
 
-or install it manual with:
+或者手动安装：
 
 ```bash
 git clone https://aur.archlinux.org/lazysql.git
@@ -129,32 +137,29 @@ cd lazysql
 makepkg -si
 ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 
-## Optional telemetry
+## 可选遥测
 
-Configured official releases disclose minimal anonymous aggregate usage counts
-before sending any data. **Keep enabled** is the default; choose **Disable** or
-use `--no-telemetry` to opt out. Source builds send nothing. See [data collected, opt-out, limitations,
-and free self-hosting instructions](docs/telemetry.md).
+官方发行版在发送任何数据前，会先披露极简的匿名聚合使用统计。默认**保持开启**；选择 **Disable** 或使用 `--no-telemetry` 即可退出。源码构建不发送任何数据。详见 [收集的数据、退出方式、限制与免费自托管说明](docs/telemetry.md)。
 
-## Configuration
+## 配置
 
-If the `XDG_CONFIG_HOME` environment variable is set, the configuration file will be located at:
+如果设置了 `XDG_CONFIG_HOME` 环境变量，配置文件位于：
 
 - `${XDG_CONFIG_HOME}/lazysql/config.toml`
 
-If not, the configuration file will be located at:
+否则，配置文件位于：
 
-- Windows: `%APPDATA%\lazysql\config.toml`
-- macOS: `~/Library/Application Support/lazysql/config.toml`
-- Linux: `~/.config/lazysql/config.toml`
+- Windows：`%APPDATA%\lazysql\config.toml`
+- macOS：`~/Library/Application Support/lazysql/config.toml`
+- Linux：`~/.config/lazysql/config.toml`
 
-The configuration file is a TOML file and can be used to define multiple connections.
+配置文件是 TOML 格式，可用于定义多个连接。
 
-### Example configuration
+### 示例配置
 
 ```toml
 [[database]]
@@ -188,62 +193,55 @@ max_open_connections = 8
 max_idle_connections = 8
 ```
 
-The `ReadOnly` field (optional, defaults to `false`) can be set to `true` to enable read-only mode for a connection. When enabled, all mutation queries (INSERT, UPDATE, DELETE, DROP, etc.) will be blocked.
+`ReadOnly` 字段（可选，默认为 `false`）可以设为 `true` 以启用连接的只读模式。启用后，所有变更类查询（INSERT、UPDATE、DELETE、DROP 等）都会被阻止。
 
-Database entries may override the connection pool with `max_open_connections` and `max_idle_connections`. Omitted values inherit the application settings; an explicit `0` uses LazySQL's default of `8`. Invalid combinations (for example, idle connections greater than open connections) are rejected. SQLite always uses one open and one idle connection (`1/1`) to preserve in-memory database behavior, ignoring the general pool settings.
+数据库条目可以用 `max_open_connections` 和 `max_idle_connections` 覆盖连接池设置。省略的值继承应用设置；显式的 `0` 使用 LazySQL 默认值 `8`。无效组合（例如空闲连接数大于打开连接数）会被拒绝。SQLite 始终使用一条打开连接和一条空闲连接（`1/1`）以保持内存数据库行为，忽略通用连接池设置。
 
-The `DBName` field (optional) controls how the sidebar tree is populated when a connection is opened:
+`DBName` 字段（可选）控制打开连接时侧边栏树的填充方式：
 
-- **`DBName` set** (e.g. `DBName = 'foo'`): the tree is pinned to that single database only. This is the default behavior when a connection is created/edited through the in-app connection form, since `DBName` is auto-filled from whatever database is embedded in the connection URL.
-- **`DBName` empty or omitted**: the tree lists *every* database in the instance that the connecting user has `CONNECT` privileges on (via `GetDatabases()`), not just the one in the URL. This is useful when you regularly need to browse or query across multiple databases/catalogs on the same PostgreSQL or MSSQL server — PostgreSQL in particular requires a database to be specified in the connection string even though the same login is often valid for several databases on that instance.
+- **设置了 `DBName`**（例如 `DBName = 'foo'`）：树只固定显示该单一数据库。这是通过应用内连接表单创建/编辑连接时的默认行为，因为 `DBName` 会从连接 URL 中内嵌的数据库自动填充。
+- **`DBName` 为空或省略**：树会列出连接用户拥有 `CONNECT` 权限的*所有*数据库（通过 `GetDatabases()`），而不只是 URL 里的那个。当你在同一台 PostgreSQL 或 MSSQL 服务器上经常需要跨多个数据库/目录浏览或查询时非常有用——尤其是 PostgreSQL，连接串里必须指定一个数据库，尽管同一个登录账号通常对该实例上的多个数据库都有效。
 
-To enable multi-database browsing for a connection, either:
+要为某个连接启用多数据库浏览，可以：
 
-- Remove/comment out the `DBName` line for that connection directly in `config.toml`, **or**
-- Check **"Show all databases in this instance"** when adding or editing the connection through the in-app connection form (`a` to add, `e` to edit from the connection picker). This overrides the auto-filled `DBName` and saves the connection with it left empty, without you needing to hand-edit the TOML file. When re-opening an existing connection for editing, the checkbox is automatically pre-checked if it was previously saved this way.
+- 直接在 `config.toml` 中删除/注释掉该连接的 `DBName` 行，**或者**
+- 在应用内连接表单中添加或编辑连接时勾选 **"Show all databases in this instance"**（`a` 添加、`e` 在连接选择器中编辑）。这会覆盖自动填充的 `DBName`，并以留空的方式保存连接，无需手工编辑 TOML 文件。重新打开已有连接编辑时，如果之前是这样保存的，复选框会自动预勾选。
 
-Note: this setting only affects which databases populate the sidebar tree. It does not change which database the initial connection is authenticated against — that is still determined entirely by the database in the connection URL (a requirement of the PostgreSQL and MSSQL wire protocols).
+注意：此设置只影响哪些数据库填充侧边栏树。它不会改变初始连接认证所针对的数据库——那仍然完全由连接 URL 中的数据库决定（这是 PostgreSQL 和 MSSQL 线协议的要求）。
 
-The `[application]` section is used to define some app settings. Not all settings are available yet, this is a work in progress.
+`[application]` 段用于定义一些应用设置。并非所有设置都已可用，这是一个持续完善的过程。
 
-### Application settings
+### 应用设置
 
-| Setting | Default | Description |
+| 设置 | 默认值 | 说明 |
 | ------- | ------- | ----------- |
-| DefaultPageSize | 300 | Number of records to fetch per page |
-| DisableSidebar | false | Disable the sidebar |
-| SidebarOverlay | false | Show sidebar as overlay instead of side panel |
-| JSONViewerWordWrap | false | Enable word wrap in JSON viewer |
-| EnterOpensJSONViewer | false | Open JSON viewer when pressing Enter on a cell |
-| DisableUpdateCheck | false | Disable automatic GitHub release checks (manual checks remain available) |
-| exact_count_threshold | 50000 | Automatically run an exact count when an unfiltered estimate is at or below this value (0 = never auto-count an estimate) |
-| exact_count_timeout_ms | 200 | Budget for automatic exact counts in milliseconds (0 = disable automatic exact counts; manual `#` remains available) |
-| max_query_rows | 1000 | Maximum rows shown by an interactive SQL-editor result (0 = unlimited) |
-| schema_bulk_load_threshold | 200 | Maximum visible tables whose columns are eagerly loaded in bulk (0 = always lazy) |
-| max_open_connections | 8 | Maximum open connections for MySQL, PostgreSQL, and MSSQL (0 = use default 8) |
-| max_idle_connections | 8 | Maximum idle connections for MySQL, PostgreSQL, and MSSQL (0 = use default 8) |
-| language | zh | UI language. Built-in codes: `zh` (Simplified Chinese, default) and `en` (English). Any other code uses English as the base and is intended for use with `language_file` |
-| language_file | "" | Path to a custom language file (JSON mapping English UI strings to their translations). Entries override the built-in language pack, enabling arbitrary languages or terminology without recompiling |
+| DefaultPageSize | 300 | 每页获取的记录数 |
+| DisableSidebar | false | 禁用侧边栏 |
+| SidebarOverlay | false | 将侧边栏显示为覆盖层而不是侧面板 |
+| JSONViewerWordWrap | false | 在 JSON 查看器中启用自动换行 |
+| EnterOpensJSONViewer | false | 在单元格上按 Enter 时打开 JSON 查看器 |
+| DisableUpdateCheck | false | 禁用自动 GitHub 发行版检查（手动检查仍然可用） |
+| exact_count_threshold | 50000 | 当未过滤的估算值小于等于该值时自动执行精确计数（0 = 永远不对估算值自动计数） |
+| exact_count_timeout_ms | 200 | 自动精确计数的预算时间，单位毫秒（0 = 禁用自动精确计数；手动 `#` 仍然可用） |
+| max_query_rows | 1000 | 交互式 SQL 编辑器结果最多显示的行数（0 = 无限制） |
+| schema_bulk_load_threshold | 200 | 可见表数量达到该值时批量预加载列（0 = 始终惰性加载） |
+| max_open_connections | 8 | MySQL、PostgreSQL 和 MSSQL 的最大打开连接数（0 = 使用默认值 8） |
+| max_idle_connections | 8 | MySQL、PostgreSQL 和 MSSQL 的最大空闲连接数（0 = 使用默认值 8） |
+| language | zh | UI 语言。内置代码：`zh`（简体中文，默认）和 `en`（英文）。其他任意代码以英文为基础，配合 `language_file` 使用 |
+| language_file | "" | 自定义语言文件的路径（JSON，将英文 UI 字符串映射为译文）。条目会覆盖内置语言包，可在不重新编译的情况下实现任意语言或术语定制 |
 
-`schema_bulk_load_threshold` limits eager autocomplete column loading to small
-visible schemas. `0` keeps all columns lazy; larger schemas still expose table
-names immediately and fetch a requested table on demand. Cached or in-flight
-columns are reused regardless of the threshold.
+`schema_bulk_load_threshold` 限制对小型可见 schema 的列做批量预加载。`0` 让所有列保持惰性；较大的 schema 仍然立即暴露表名，并在需要时按需获取指定表。无论阈值如何，已缓存或加载中的列都会被复用。
 
-### Internationalization (i18n)
+### 国际化（i18n）
 
-LazySQL ships with built-in Simplified Chinese (`zh`, the default) and English
-(`en`) UI language packs. Select a language with the `language` setting:
+LazySQL 内置简体中文（`zh`，默认）和英文（`en`）两种 UI 语言包。通过 `language` 设置选择语言：
 
 ```toml
 [application]
-language = "zh"   # or "en"
+language = "zh"   # 或 "en"
 ```
 
-To use your own language or terminology without recompiling, point
-`language_file` at a JSON file that maps English UI strings to your
-translations. Entries in the custom file override the built-in pack; keys that
-are absent from the custom file keep their built-in translation:
+要使用自己的语言或术语而无需重新编译，请将 `language_file` 指向一个 JSON 文件，把英文 UI 字符串映射为你的译文。自定义文件中的条目会覆盖内置语言包；自定义文件中缺失的键保留内置翻译：
 
 ```json
 {
@@ -253,67 +251,43 @@ are absent from the custom file keep their built-in translation:
 }
 ```
 
-Custom language files are loaded after the built-in pack, so you only need to
-include the strings you want to change. Set `language` to a value other than
-`zh`/`en` (for example `"custom"`) to start from English and let the custom
-file provide the entire UI. The default language is `zh`.
+自定义语言文件在内置语言包之后加载，因此你只需包含想要修改的字符串。将 `language` 设置为 `zh`/`en` 以外的值（例如 `"custom"`），即以英文为基础，由自定义文件提供整个 UI。默认语言为 `zh`。
 
-### Where the built-in translations live
+### 内置翻译文件位置
 
-The built-in language packs are embedded at compile time:
+内置语言包在编译时内嵌：
 
-| File | Role |
+| 文件 | 作用 |
 | --- | --- |
-| `internal/i18n/locales/zh.json` | Simplified Chinese pack (default; currently 433 keys) |
-| `internal/i18n/locales/en.json` | English pack (kept as `{}`; every key falls back to the English source string) |
+| `internal/i18n/locales/zh.json` | 简体中文语言包（默认；当前 433 个键） |
+| `internal/i18n/locales/en.json` | 英文语言包（保持为 `{}`；所有键回退到英文原文） |
 
-Translation **keys are the English UI strings themselves**, plus three
-prefixed key families rendered at runtime:
+翻译**键就是英文 UI 字符串本身**，另有三个运行时渲染的前缀键族：
 
-| Key kind | Example | Source |
+| 键类型 | 示例 | 来源 |
 | --- | --- | --- |
-| Plain UI string | `"Save"`, `"Query failed: %s"` | `i18n.T(...)` / `i18n.Tf(...)` calls in the components |
-| Command name | `"cmd.Quit"`, `"cmd.CopyRowsAs"` | `commands.Command.String()` |
-| Keymap group | `"keymap.group.table"` | group names in `app/keymap.go` |
-| Keybinding description | `"Focus table"`, `"Export to CSV"` | `Bind.Description` in `app/keymap.go` |
+| 普通 UI 字符串 | `"Save"`、`"Query failed: %s"` | 各组件中的 `i18n.T(...)` / `i18n.Tf(...)` 调用 |
+| 命令名 | `"cmd.Quit"`、`"cmd.CopyRowsAs"` | `commands.Command.String()` |
+| 键位分组 | `"keymap.group.table"` | `app/keymap.go` 中的分组名 |
+| 按键描述 | `"Focus table"`、`"Export to CSV"` | `app/keymap.go` 中的 `Bind.Description` |
 
-To change the default wording of the Chinese UI, edit `zh.json` and rebuild.
-To add a brand-new language, copy the `zh.json` shape (or start from an empty
-file and let the English fallback fill the gaps) and load it at runtime via
-`language_file` — no recompile required.
+要修改中文 UI 的默认文案，编辑 `zh.json` 后重新编译即可。要新增一门语言，复制 `zh.json` 的结构（或从空文件开始，让英文回退补足缺口），再通过 `language_file` 在运行时加载——无需重新编译。
 
-### Upgrade notices and in-app upgrades
+### 升级提示与应用内升级
 
-LazySQL checks the official GitHub repository for a newer stable release in the
-background, at most once per day after a successful check. A notice appears in the
-bottom status line without interrupting your work. Development builds do not
-check for updates. Only release metadata is requested; no database or connection
-information is sent.
+LazySQL 会在后台检查官方 GitHub 仓库是否有更新的稳定版本，每次成功检查后每天最多一次。提示会出现在底部状态栏，不会打断你的工作。开发构建不检查更新。只请求发行版元数据；不发送任何数据库或连接信息。
 
-Press **F10** anywhere to check for updates or open an available upgrade. The
-shortcut can be changed with `CheckForUpdates` in `[keymap.global]`.
+在任何位置按 **F10** 检查更新或打开可用升级。快捷键可在 `[keymap.global]` 中用 `CheckForUpdates` 修改。
 
-- **Standalone macOS/Linux binaries:** choose **Upgrade** to download the matching
-  release, verify its SHA-256 checksum against the official release checksum file,
-  and atomically replace the executable. The installation directory must be
-  writable. LazySQL never runs `sudo` or restarts your active session; restart
-  manually when ready.
-- **Homebrew and other recognized managed installations:** the dialog gives
-  package-manager instructions rather than overwriting managed files.
-- **Windows:** the dialog provides manual/package-manager upgrade instructions;
-  in-place self-upgrade is not supported.
+- **独立的 macOS/Linux 二进制：** 选择 **Upgrade** 下载匹配的发行版，与官方发行版校验和文件核对 SHA-256 校验和，并原子替换可执行文件。安装目录必须可写。LazySQL 永远不会运行 `sudo` 或重启你的活动会话；准备好后请手动重启。
+- **Homebrew 和其他受认可的受管安装：** 对话框给出包管理器指令，而不是覆盖受管文件。
+- **Windows：** 对话框提供手动/包管理器升级说明；不支持就地自升级。
 
-Automatic checks can be disabled with `DisableUpdateCheck = true` under
-`[application]`, or by setting `LAZYSQL_NO_UPDATE_CHECK=1`. Manual checks still work.
-Network failures do not prevent startup; manual checks show errors and can be
-retried. Closing the upgrade dialog lets you keep working while the download
-finishes. Exiting LazySQL cancels an unfinished download and waits for installer
-file operations to finish. Your existing binary is left intact if verification
-or staging fails.
+自动检查可通过在 `[application]` 下设置 `DisableUpdateCheck = true` 或设置环境变量 `LAZYSQL_NO_UPDATE_CHECK=1` 来禁用。手动检查仍然可用。网络失败不会阻止启动；手动检查会显示错误并可重试。关闭升级对话框后你仍可继续工作，同时下载在后台完成。退出 LazySQL 会取消未完成的下载，并等待安装程序文件操作完成。如果校验或暂存失败，现有二进制保持原样。
 
-### Themes
+### 主题
 
-Colors are set in the `[theme]` section. Pick a preset and, optionally, override single colors on top of it:
+颜色在 `[theme]` 段中设置。选择一个预设，并可选地在预设之上覆盖单个颜色：
 
 ```toml
 [theme]
@@ -327,63 +301,63 @@ EditorStatusBarBackground = "lightgray"
 SQLKeyword = "#005F87"
 ```
 
-Presets:
+预设：
 
-| Preset | Description |
+| 预设 | 说明 |
 | ------ | ----------- |
-| `default` | The standard lazysql colors, on the terminal's background |
-| `light` | GitHub-inspired light palette with a painted background |
+| `default` | 标准 lazysql 颜色，使用终端的背景色 |
+| `light` | 受 GitHub 启发的浅色配色，带自定义背景 |
 | `dracula` | [Dracula](https://draculatheme.com) |
-| `gruvbox-dark` | [Gruvbox](https://github.com/morhetz/gruvbox) dark |
+| `gruvbox-dark` | [Gruvbox](https://github.com/morhetz/gruvbox) 暗色 |
 | `nord` | [Nord](https://www.nordtheme.com) |
-| `solarized-light` | [Solarized](https://ethanschoonover.com/solarized/) light |
+| `solarized-light` | [Solarized](https://ethanschoonover.com/solarized/) 浅色 |
 | `tokyo-night` | [Tokyo Night](https://github.com/enkia/tokyo-night-vscode-theme) |
 | `catppuccin-mocha` | [Catppuccin](https://github.com/catppuccin/catppuccin) Mocha |
 
-Press `Ctrl+T` anywhere in lazysql to open the theme picker. Move with the arrow keys, `j`/`k`, or `Ctrl+N`/`Ctrl+P` to preview each theme across the running application. Press `Enter` to apply and save the selected preset, or `q`/`Esc` to restore the previous theme.
+在 lazysql 中任意位置按 `Ctrl+T` 打开主题选择器。用方向键、`j`/`k` 或 `Ctrl+N`/`Ctrl+P` 在运行中的应用上预览每个主题。按 `Enter` 应用并保存所选预设，或按 `q`/`Esc` 恢复之前的主题。
 
-`default` uses the terminal's background color. All other presets paint their own background.
+`default` 使用终端的背景色。其他所有预设都会绘制自己的背景。
 
-A color is a name (`"red"`, `"dodgerblue"`, any [W3C color name](https://github.com/gdamore/tcell/blob/v2.7.4/color.go#L851)), a hex value (`"#RRGGBB"`), or `"default"` for the terminal's own color. Unknown keys, presets and colors are reported when lazysql starts.
+颜色可以是名称（`"red"`、`"dodgerblue"`，任意 [W3C 颜色名](https://github.com/gdamore/tcell/blob/v2.7.4/color.go#L851)）、十六进制值（`"#RRGGBB"`），或 `"default"` 使用终端自身的颜色。lazysql 启动时会报告未知的键、预设和颜色。
 
-Keys for `[theme.Colors]`:
+`[theme.Colors]` 的键：
 
-| Key | Used for |
+| 键 | 用途 |
 | --- | -------- |
-| `PrimitiveBackground` | Background of all views |
-| `ContrastBackground`, `MoreContrastBackground` | Backgrounds of input fields, buttons and drop-downs |
-| `Border`, `Title`, `Graphics` | Default border, title and line colors |
-| `PrimaryText` | Main text |
-| `SecondaryText` | Highlights: selected rows, active tab, key hints, sidebar values |
-| `TertiaryText` | Labels and status messages |
-| `InverseText` | Borders and text of unfocused views, form fields |
-| `ContrastSecondaryText` | Text drawn on `SecondaryText` (selected rows, active tab) |
-| `SidebarTitleBorder` | Separator next to the sidebar field names |
-| `Error` | Error messages |
-| `ReadOnly` | Read-only markers |
-| `TableChange`, `TableInsert`, `TableDelete`, `TableMarked` | Backgrounds of changed, inserted, deleted and marked rows |
-| `EditorSelection` | Selected text in the SQL editor |
-| `EditorStatusBarBackground`, `EditorStatusBarText` | SQL editor status bar |
-| `AutocompleteBackground`, `AutocompleteText`, `AutocompleteSelected`, `AutocompleteDescription`, `AutocompleteSeparator` | SQL editor autocomplete popup |
-| `SQLKeyword`, `SQLString`, `SQLNumber`, `SQLComment`, `SQLFunction`, `SQLOperator`, `SQLType`, `SQLBoolean`, `SQLParameter` | SQL syntax highlighting |
-| `JSONKey`, `JSONString`, `JSONBoolean`, `JSONNull`, `JSONNumber` | JSON viewer |
+| `PrimitiveBackground` | 所有视图的背景 |
+| `ContrastBackground`、`MoreContrastBackground` | 输入框、按钮和下拉框的背景 |
+| `Border`、`Title`、`Graphics` | 默认边框、标题和线条颜色 |
+| `PrimaryText` | 主要文本 |
+| `SecondaryText` | 高亮：选中行、活动标签页、按键提示、侧边栏值 |
+| `TertiaryText` | 标签和状态消息 |
+| `InverseText` | 未聚焦视图、表单字段的边框和文本 |
+| `ContrastSecondaryText` | 绘制在 `SecondaryText` 上的文本（选中行、活动标签页） |
+| `SidebarTitleBorder` | 侧边栏字段名旁边的分隔线 |
+| `Error` | 错误消息 |
+| `ReadOnly` | 只读标记 |
+| `TableChange`、`TableInsert`、`TableDelete`、`TableMarked` | 已修改、已插入、已删除和已标记行的背景 |
+| `EditorSelection` | SQL 编辑器中的选中文本 |
+| `EditorStatusBarBackground`、`EditorStatusBarText` | SQL 编辑器状态栏 |
+| `AutocompleteBackground`、`AutocompleteText`、`AutocompleteSelected`、`AutocompleteDescription`、`AutocompleteSeparator` | SQL 编辑器自动补全弹窗 |
+| `SQLKeyword`、`SQLString`、`SQLNumber`、`SQLComment`、`SQLFunction`、`SQLOperator`、`SQLType`、`SQLBoolean`、`SQLParameter` | SQL 语法高亮 |
+| `JSONKey`、`JSONString`、`JSONBoolean`、`JSONNull`、`JSONNumber` | JSON 查看器 |
 
-### Local Configuration
+### 本地配置
 
-You can place a `.lazysql.toml` file in your project directory (next to your `.git` folder) to override the global configuration for that project. This is useful for defining project-specific database connections or settings.
+你可以在项目目录中（`.git` 文件夹旁边）放置一个 `.lazysql.toml` 文件，为该项目覆盖全局配置。这对于定义项目专属的数据库连接或设置很有用。
 
-lazysql searches for `.lazysql.toml` by walking up from the current working directory. It stops at the git repository root (where `.git` is found). If no local config is found, the global configuration is used as-is.
+lazysql 从当前工作目录向上查找 `.lazysql.toml`。在 git 仓库根目录（找到 `.git` 的地方）停止。如果找不到本地配置，则直接使用全局配置。
 
-**Merge behavior:**
+**合并行为：**
 
-| Section | Behavior |
+| 段 | 行为 |
 | ------- | -------- |
-| `[application]` | Deep merge — local values override global, unset fields keep global/defaults |
-| `[[database]]` | Replace — local connections completely replace global connections |
-| `[keymap.*]` | Deep merge — local keybindings override global ones for the same command |
-| `[theme]` | Deep merge — a local `Preset` or color overrides the global one, other colors are kept |
+| `[application]` | 深度合并——本地值覆盖全局，未设置字段保留全局/默认值 |
+| `[[database]]` | 替换——本地连接完全替换全局连接 |
+| `[keymap.*]` | 深度合并——同一命令的本地按键覆盖全局 |
+| `[theme]` | 深度合并——本地的 `Preset` 或颜色覆盖全局，其他颜色保留 |
 
-**Example `.lazysql.toml`:**
+**示例 `.lazysql.toml`：**
 
 ```toml
 [application]
@@ -395,24 +369,19 @@ Provider = 'postgres'
 URL = 'postgres://localhost/myproject_dev'
 ```
 
-With this local config, `DefaultPageSize` overrides the global value, and only the `Local development` connection is available (global connections are replaced).
+使用此本地配置时，`DefaultPageSize` 覆盖全局值，且只有 `Local development` 连接可用（全局连接被替换）。
 
-Environment variables (`${env:VAR_NAME}`) work in local config files just like in the global config. Saving connections preserves these placeholders in fields you have not changed, instead of writing the expanded credentials.
+环境变量（`${env:VAR_NAME}`）在本地配置文件中的用法与全局配置相同。保存连接时，会保留你未修改字段中的占位符，而不是写入展开后的凭据。
 
-Note: Changes made from the UI only update the setting that changed and keep the rest of the target file. Connections you add, edit or delete are saved to the local `.lazysql.toml` if it defines `[[database]]`, otherwise to the global config file. A theme picked with `Ctrl+T` is saved to the local `.lazysql.toml` when one is found, otherwise to the global config file. Comments in a file are not kept when lazysql saves it.
+注意：从 UI 所做的更改只更新发生变化的设置，并保留目标文件的其余部分。如果本地 `.lazysql.toml` 定义了 `[[database]]`，你添加、编辑或删除的连接会保存到本地 `.lazysql.toml`，否则保存到全局配置文件。当找到本地 `.lazysql.toml` 时，用 `Ctrl+T` 选择的主题会保存到本地文件，否则保存到全局配置文件。lazysql 保存文件时不会保留注释。
 
-### Manual database test environment
+### 手动数据库测试环境
 
-This repository includes a plug-and-play, development-only fixtures for
-MySQL, PostgreSQL, MSSQL,
-and SQLite. The fixture is intended for manual testing of records, pagination,
-filtering, sorting, metadata, Foreign Key Jump, SQL editor results, and CSV
-exports.
+本仓库包含一套即插即用、仅供开发的 fixtures，用于 MySQL、PostgreSQL、MSSQL 和 SQLite。该 fixtures 用于手动测试记录、分页、过滤、排序、元数据、外键跳转、SQL 编辑器结果和 CSV 导出。
 
-Prerequisites are Docker, Docker Compose v2, and OpenSSL. The stack does not require any
-host-installed database client.
+前置条件为 Docker、Docker Compose v2 和 OpenSSL。该栈不需要宿主机安装任何数据库客户端。
 
-From the repository root:
+在仓库根目录：
 
 ```bash
 ./scripts/manual-databases.sh validate
@@ -421,298 +390,227 @@ From the repository root:
 lazysql
 ```
 
-`init` generates a random password and private, git-ignored `.env.manual-databases`
-and `.lazysql.toml` files. It refuses to overwrite existing local configuration.
-Ports bind only to `127.0.0.1`. Do not reuse these development credentials elsewhere.
-If upgrading from the old fixed-password fixtures, run `reset` after `init` to
-recreate the volumes with the new password (this deletes all fixture data).
+`init` 会生成随机密码和私有的、被 git 忽略的 `.env.manual-databases` 与 `.lazysql.toml` 文件。它拒绝覆盖已有的本地配置。端口只绑定到 `127.0.0.1`。不要在其他地方复用这些开发凭据。如果是从旧固定密码 fixtures 升级，请在 `init` 后运行 `reset` 以用新密码重建卷（这会删除所有 fixtures 数据）。
 
-When LazySQL is started from the repository root, the generated `.lazysql.toml`
-is discovered automatically and contains four ready-to-use connections:
+当 LazySQL 从仓库根目录启动时，会自动发现生成的 `.lazysql.toml`，其中包含四个即用连接：
 
-| Connection | Provider | Host port | Fixture database |
+| 连接 | 提供方 | 宿主机端口 | fixtures 数据库 |
 | ---------- | -------- | --------- | ---------------- |
 | Docker MySQL | `mysql` | `3307` | `lazysql_test` |
 | Docker PostgreSQL | `postgres` | `5433` | `lazysql_test` |
 | Docker MSSQL | `sqlserver` | `14331` | `lazysql_test` |
-| Docker SQLite | `sqlite3` | file | `testdata/sqlite/lazysql.sqlite3` |
+| Docker SQLite | `sqlite3` | 文件 | `testdata/sqlite/lazysql.sqlite3` |
 
-Use the helper script for the lifecycle:
+使用辅助脚本管理生命周期：
 
 ```bash
-./scripts/manual-databases.sh status  # health and seed status
-./scripts/manual-databases.sh down    # stop, preserve data
-./scripts/manual-databases.sh reset   # destroy and reseed everything
+./scripts/manual-databases.sh status  # 健康与种子状态
+./scripts/manual-databases.sh down    # 停止，保留数据
+./scripts/manual-databases.sh reset   # 销毁并重新播种所有内容
 ```
 
-`up` builds the small SQLite helper image, initializes the server fixtures, and
-waits until all databases contain their seed tables. MySQL and PostgreSQL use
-their official image initialization hooks and named volumes; those scripts run
-when the volume is empty. MSSQL seeds through a second container and keeps a
-seed marker so restarting the stack does not overwrite manual changes. SQLite
-is a local file seeded by the helper container and is safe to initialize more
-than once. Use `reset` when a clean fixture is needed.
+`up` 会构建小型 SQLite 辅助镜像、初始化服务器 fixtures，并等待所有数据库包含其种子表。MySQL 和 PostgreSQL 使用官方镜像的初始化钩子和命名卷；这些脚本在卷为空时运行。MSSQL 通过第二个容器播种，并保留种子标记，因此重启栈不会覆盖手动更改。SQLite 是本地文件，由辅助容器播种，可安全地多次初始化。需要干净 fixtures 时使用 `reset`。
 
-The fixture uses 1,200 customers, 300 products, 3,000 orders, 9,000 order
-items, and 2,400 customer notes. It includes primary/foreign keys, unique
-constraints, indexes, nullable columns, dates, numeric and boolean values,
-JSON/text values, a view, and provider-specific catalog objects. See
-[`testdata/README.md`](testdata/README.md) for the model and
-[`docker-compose.yml`](docker-compose.yml) for ports and credentials.
+fixtures 包含 1,200 位客户、300 个产品、3,000 个订单、9,000 个订单项和 2,400 条客户备注。包含主/外键、唯一约束、索引、可空列、日期、数值和布尔值、JSON/文本值、视图以及各提供方特有的目录对象。模型见 [`testdata/README.md`](testdata/README.md)，端口和凭据见 [`docker-compose.yml`](docker-compose.yml)。
 
-The MSSQL image is x86-64-only and the service is explicitly run as
-`linux/amd64`. Docker may emulate it on Apple Silicon; Microsoft does not
-support that emulation path, so use a native x86 host or a remote SQL Server if
-it fails. If a host port is already in use, change the port in both
-`docker-compose.yml` and `.lazysql.toml` before starting the stack. The SQLite
-URL is relative to the process working directory, so launch LazySQL from the
-repository root for that connection.
+MSSQL 镜像是 x86-64 专属，服务明确以 `linux/amd64` 运行。Docker 在 Apple Silicon 上可能会模拟它；微软不支持该模拟路径，因此如果失败，请使用原生 x86 主机或远程 SQL Server。如果宿主机端口已被占用，请在启动栈前同时修改 `docker-compose.yml` 和 `.lazysql.toml` 中的端口。SQLite URL 相对于进程工作目录，因此请从仓库根目录启动 LazySQL 以使用该连接。
 
+## 使用
 
-## Usage
+> 查看键盘快捷键列表请按 `?`
 
-> For a list of keyboard shortcuts press `?`
+打开 TUI：
 
-Open the TUI with:
 ```console
 $ lazysql
 ```
 
-To launch lazysql with the ability to pick from the saved connections.
+从已保存的连接中选择并启动：
+
 ```console
 $ lazysql [connection_url]
 ```
 
-To launch lazysql and connect to database at [connection_url].
+连接 `[connection_url]` 处的数据库并启动：
 
 ```console
 $ lazysql --read-only [connection_url]
 ```
 
-To launch lazysql in read-only mode.
+以只读模式启动。
 
-### Connect to a DB
+### 连接数据库
 
-1. Start `lazysql`
-2. Create a new connection (press `n`)
-3. Provide a name for the connection as well as the URL to connect to (see <a href="#example-connection-urls">example connection URL</a>)
-4. Connect to the DB (press `<Enter>`)
+1. 启动 `lazysql`
+2. 新建连接（按 `n`）
+3. 为连接提供名称以及要连接的 URL（参见 <a href="#示例连接-url">示例连接 URL</a>）
+4. 连接数据库（按 `<Enter>`）
 
-If you already have a connection set up:
-1. Start `lazysql`
-2. Select the right connection (press `j` and `h` for navigation)
-3. Connect to the DB (press `c` or `<Enter>`)
+如果你已经有连接配置：
 
-### Create a table
+1. 启动 `lazysql`
+2. 选择正确的连接（按 `j` 和 `h` 导航）
+3. 连接数据库（按 `c` 或 `<Enter>`）
 
-There is currently no way to create a table from the TUI.
-However you can run the query to create the table as a SQL-Query,
-inside the <a href="#execute-sql-queries">SQL Editor</a>.
+### 创建表
 
-You can update the tree by pressing `R`, so you can see your newly created table.
+目前还没有办法从 TUI 中直接创建表。但你可以在 <a href="#执行-sql-查询">SQL 编辑器</a> 中把建表语句作为 SQL 查询运行。
 
-### Execute SQL queries
+你可以按 `R` 更新树，就能看到新创建的表。
 
-1. Press `<Ctrl+E>` to open the built-in SQL Editor
-2. Write the SQL query
-3. Press `<Ctrl+R>` to execute the SQL query
+### 执行 SQL 查询
 
-> To switch back to the table-tree press `H`
+1. 按 `<Ctrl+E>` 打开内置 SQL 编辑器
+2. 编写 SQL 查询
+3. 按 `<Ctrl+R>` 执行 SQL 查询
+
+> 要切回表树请按 `H`
 >
-> After executing a `SELECT`-query a table will be displayed under the SQL-Editor
-> with the query-result. \
-> To switch focus back to SQL-Editor press `/`
+> 执行 `SELECT` 查询后，SQL 编辑器下方会显示一个包含查询结果的表。\
+> 要切回 SQL 编辑器请按 `/`
 
-### Result and network semantics
+### 结果与网络语义
 
-Records pages are fetched with one page of rows plus a lookahead row. The
-lookahead makes navigation work without an exact count, so the pagination label
-has three intentional forms:
+记录页按"一页行数 + 一行前瞻"获取。前瞻行让导航无需精确计数即可工作，因此分页标签有三种有意的形式：
 
-- `843 rows` / `1-843 of 843 rows`: **exact**; the database count or an
-  end-of-page inference proved the total.
-- `~4.3M rows`: **estimated**; the database supplied a useful estimate, but it
-  is not a guarantee.
-- `300+ rows`: **unknown-more**; the current page has more rows available and
-  no exact total is known yet.
+- `843 rows` / `1-843 of 843 rows`：**精确**；数据库计数或页尾推断证明了总数。
+- `~4.3M rows`：**估算**；数据库提供了有用的估算值，但不保证准确。
+- `300+ rows`：**未知更多**；当前页还有更多行，尚不知道精确总数。
 
-#### Exact Records count
+#### 精确记录数
 
-Press `#` (`ExactCount`) in the Records surface to start an exact count. Press
-`#` again while it is running to cancel it; a failed count stays local to the
-pagination bar and can be retried with `#`. Automatic counting never blocks the
-first Records page: LazySQL first uses a driver estimate where available and
-runs an exact count only when the estimate is at or below
-`exact_count_threshold` (default `50000`), or when an estimate is unavailable.
-A threshold of `0` disables estimate-driven automatic exact counts; filtered
-counts and unavailable estimates still obey the timeout. The automatic count is
-bounded by `exact_count_timeout_ms` (default `200`). Set
-that timeout to `0` to disable automatic exact counts; estimates still render
-and a manual `#` count remains available. Filtered Records counts are also
-bounded by the automatic timeout.
+在 Records 界面按 `#`（`ExactCount`）开始精确计数。运行时再按 `#` 取消；失败的计数只停留在分页栏，可用 `#` 重试。自动计数永远不会阻塞第一页 Records：LazySQL 优先使用驱动估算（如有），仅当估算值小于等于 `exact_count_threshold`（默认 `50000`）或没有估算值时，才运行精确计数。阈值为 `0` 会禁用基于估算的自动精确计数；过滤计数和无估算值仍受超时约束。自动计数受 `exact_count_timeout_ms`（默认 `200`）限制。将该超时设为 `0` 可禁用自动精确计数；估算值仍会渲染，手动 `#` 计数仍然可用。过滤后的 Records 计数也受自动超时约束。
 
-#### SQL results and cancellation
+#### SQL 结果与取消
 
-Interactive SQL results stream progressively and default to
-`max_query_rows = 1000`. A positive cap renders at most that many rows and
-performs one lookahead read so the UI can say `result truncated`; `0` means
-unlimited. The cap applies only to interactive results, not full exports.
-While a SQL-editor result query is active, press `Esc` to cancel its context and
-keep any partial rows already rendered. When no result query is active, `Esc`
-keeps the editor's normal unfocus/editing behavior.
+交互式 SQL 结果会渐进式流式返回，默认上限为 `max_query_rows = 1000`。正数上限最多渲染这么多行，并执行一次前瞻读取，以便 UI 显示 `result truncated`；`0` 表示无限制。该上限只适用于交互式结果，不适用于完整导出。当 SQL 编辑器结果查询正在运行时，按 `Esc` 取消其上下文并保留已渲染的部分行。当没有结果查询运行时，`Esc` 保持编辑器的正常取消聚焦/编辑行为。
 
-#### CSV export
+#### CSV 导出
 
-- **Export Visible Results** writes the rows already shown and never
-  reexecutes the SQL statement.
-- **Export All Results** streams the complete table/query result independently
-  of `max_query_rows`. For SQL results it reexecutes only a conservative,
-  replay-safe read-only statement; mutating or unknown statements offer the
-  visible-results option only.
+- **导出可见结果** 写入已显示的行，绝不重新执行 SQL 语句。
+- **导出全部结果** 独立于 `max_query_rows` 流式导出完整的表/查询结果。对于 SQL 结果，它只重新执行保守、可重放的安全只读语句；变更类或未知语句只提供可见结果选项。
 
-Both scopes write through a temporary file. Cancellation, query failure, or a
-write/rename failure removes the temporary file and leaves an existing
-destination unchanged.
+两种范围都通过临时文件写入。取消、查询失败或写入/重命名失败都会删除临时文件，并保持已有目标文件不变。
 
-#### Performance diagnostics
+#### 性能诊断
 
-For local JSONL timings, start LazySQL with `--loglevel debug --logfile /path/to/lazysql.jsonl`. Logs include operation duration, database identity,
-cache/fallback outcome, cancellation/failure, and
-`event=first_useful_result` for Records and SQL-editor results. SQL text,
-arguments, row values, credentials, and connection URLs are redacted; no
-telemetry is sent.
+如需本地 JSONL 计时，请以 `--loglevel debug --logfile /path/to/lazysql.jsonl` 启动 LazySQL。日志包含操作耗时、数据库标识、缓存/回退结果、取消/失败，以及 Records 和 SQL 编辑器结果的 `event=first_useful_result`。SQL 文本、参数、行值、凭据和连接 URL 都会被脱敏；不发送任何遥测。
 
-For the implementation matrix and the no-credentials RTT benchmark harness,
-see [`docs/performance.md`](docs/performance.md).
+实现矩阵和无凭据 RTT 基准测试工具见 [`docs/performance.md`](docs/performance.md)。
 
-### Open/view a table
+### 打开或查看表
 
-1. Expand the table-tree by pressing `e` or `<Enter>`
-2. Select the table you want to view
-    - next node `j`
-    - previous node `k`
-    - last node `G`
-    - first node `g`
-3. Press `<Enter>` to open the table
+1. 按 `e` 或 `<Enter>` 展开表树
+2. 选择要查看的表
+    - 下一个节点 `j`
+    - 上一个节点 `k`
+    - 最后一个节点 `G`
+    - 第一个节点 `g`
+3. 按 `<Enter>` 打开表
 
-> To switch back to the table-tree press `H` \
-> To switch back to the table press `L`
+> 要切回表树请按 `H` \
+> 要切回表请按 `L`
 
-### Filter rows
+### 过滤行
 
-1. [Open a table](#openview-a-table)
-2. Press `/` to focus the filter input
-3. Write a `WHERE`-clause to filter the table
-4. Press `<Enter>` to submit your filter
+1. [打开表](#打开或查看表)
+2. 按 `/` 聚焦过滤输入框
+3. 编写 `WHERE` 子句过滤表
+4. 按 `<Enter>` 提交过滤
 
-> To remove the filter, focus the filter input (press `/`) and press `<Esc>`.
+> 要移除过滤，聚焦过滤输入框（按 `/`）并按 `<Esc>`。
 
-### Hide columns
+### 隐藏列
 
-In a table's Records view, press `V` (**visibility**) or click **Columns [V]**
-in the pagination bar. A compact picker lets you choose which columns to show:
+在表的 Records 视图中，按 `V`（**visibility**）或点击分页栏中的 **Columns [V]**。一个紧凑的选择器让你选择显示哪些列：
 
-- **Space** or click a column to toggle its checkbox.
-- **↑/↓** or **j/k** to move; **/** to find a column by name.
-- **A** or **All** to restore every column, including those outside the search.
-- **Enter** or **Apply** to save; **Esc** or **Cancel** to discard changes.
-- **Tab / Shift+Tab** to move between the list, search, and buttons.
+- **空格** 或点击某列切换其复选框。
+- **↑/↓** 或 **j/k** 移动；**/** 按名称查找列。
+- **A** 或 **All** 恢复所有列，包括搜索范围之外的。
+- **Enter** 或 **Apply** 保存；**Esc** 或 **Cancel** 放弃更改。
+- **Tab / Shift+Tab** 在列表、搜索和按钮之间移动。
 
-At least one column stays visible. The footer shows how many columns are hidden.
-Choices are remembered across restarts for each connection, database, and table,
-including schema-qualified table names. New columns are visible by default.
+至少保持一列可见。底部会显示隐藏了多少列。选择会按连接、数据库和表（包括 schema 限定的表名）在重启后记住。新列默认可见。
 
-This is display-only: queries still fetch all columns, and editing, primary keys,
-the row sidebar, row copies, and CSV exports retain the complete data. SQL editor
-results and metadata views are unaffected.
+这只是显示层面：查询仍会获取所有列，编辑、主键、行侧边栏、行复制和 CSV 导出都保留完整数据。SQL 编辑器结果和元数据视图不受影响。
 
-Preferences are stored under `[hidden_columns]` in the active configuration file
-(the project `.lazysql.toml` when present, otherwise the global config). The
-shortcut can be customized with `ColumnVisibility` in `[keymap.Table]`.
+偏好存储在当前活动配置文件（项目 `.lazysql.toml` 存在时用它，否则用全局配置）的 `[hidden_columns]` 下。快捷键可在 `[keymap.Table]` 中用 `ColumnVisibility` 自定义。
 
-### Jump to a referenced row (Foreign Key Jump)
+### 跳转到被引用的行（外键跳转）
 
-Columns that belong to a foreign key are underlined in the header, and the
-values you can follow are underlined too. Cells with pending changes (inserted,
-edited or deleted rows) are not marked.
+属于外键的列在表头中带下划线，可跟随的值也带下划线。带待定更改（插入、编辑或删除行）的单元格不会被标记。
 
-1. [Open a table](#openview-a-table)
-2. Press `1` to switch to the record tab
-3. Move to the underlined foreign key cell you want to follow
-4. Press `<Enter>` to jump to the referenced row
+1. [打开表](#打开或查看表)
+2. 按 `1` 切换到记录标签页
+3. 移动到你想要跟随的下划线外键单元格
+4. 按 `<Enter>` 跳转到被引用的行
 
-The referenced table opens in a new tab (or is focused, if it is already open)
-with a filter prefilled for the referenced value, so only the matching rows are
-shown: `WHERE <referenced_column> = '<value>'`.
+被引用的表会打开在新标签页中（如果已打开则聚焦），并预填被引用值的过滤条件，因此只显示匹配的行：`WHERE <referenced_column> = '<value>'`。
 
-> To switch tabs press `[` or `]`, to switch back to the table-tree press `H`.
+> 按 `[` 或 `]` 切换标签页，按 `H` 切回表树。
 
-Notes:
+注意：
 
-- Only single-column foreign keys can be followed. Composite foreign keys
-  (constraints spanning multiple columns) are ignored.
-- Cells whose value is `NULL`, `EMPTY` or `DEFAULT` have nothing to follow, so
-  `<Enter>` does nothing on them.
-- Supported providers: PostgreSQL, SQLite and SQL Server (MSSQL). MySQL tables
-  do not expose the foreign key information needed for the jump.
-- On a cell that supports a Foreign Key Jump, `<Enter>` follows the relation
-  instead of opening the JSON viewer, even when `EnterOpensJSONViewer` is enabled.
+- 只能跟随单列外键。复合外键（跨多列的约束）会被忽略。
+- 值为 `NULL`、`EMPTY` 或 `DEFAULT` 的单元格没有可跟随的内容，因此对其按 `<Enter>` 不会做任何事。
+- 支持的提供方：PostgreSQL、SQLite 和 SQL Server（MSSQL）。MySQL 表不暴露跳转所需的外键信息。
+- 在支持外键跳转的单元格上，即使启用了 `EnterOpensJSONViewer`，按 `<Enter>` 也会跟随关系而不是打开 JSON 查看器。
 
-### Insert a row
+### 插入行
 
-1. [Open a table](#openview-a-table)
-2. Press `1` to switch to the record tab
-3. Press `o` to insert a new row
-4. Fill out all columns
-5. Press `<Ctrl+S>` to save the changes
+1. [打开表](#打开或查看表)
+2. 按 `1` 切换到记录标签页
+3. 按 `o` 插入新行
+4. 填写所有列
+5. 按 `<Ctrl+S>` 保存更改
 
-### Edit a column
+### 编辑列
 
-1. [Open a table](#openview-a-table)
-2. Press `1` to switch to the record tab
-3. Move to the cell you want to edit
-4. Edit the value:
-    - press `c` to edit it inline, then press `<Enter>` to submit
-    - press `e` to edit it in your editor, then save and quit the editor
-5. Press `<Ctrl+S>` to save the changes
+1. [打开表](#打开或查看表)
+2. 按 `1` 切换到记录标签页
+3. 移动到你想要编辑的单元格
+4. 编辑值：
+    - 按 `c` 内联编辑，然后按 `<Enter>` 提交
+    - 按 `e` 在你的编辑器中编辑，保存并退出编辑器
+5. 按 `<Ctrl+S>` 保存更改
 
-### Copy rows
+### 复制行
 
-1. [Open a table](#openview-a-table)
-2. Move to a row and press `<Space>` to mark it. Repeat for nonadjacent rows (press `<Space>` again to unmark). For a contiguous range, press `v` and move up or down: the highlighted selection grows with the cursor. Press `<Space>` to add that range to your marks, or `<Esc>` (or `v`) to cancel it.
-3. Press `Y` while selecting a range to copy it directly, without committing marks. Otherwise, `Y` copies marked rows or, with no marks, the current row. Choose SQL (`s`), Markdown (`m`), JSON (`j`), or CSV (`c`). CSV and Markdown include column headers; JSON is an array of objects. SQL produces an `INSERT` in a records table, or a standalone `VALUES` statement in SQL editor results (which have no target table).
+1. [打开表](#打开或查看表)
+2. 移动到一行并按 `<Space>` 标记。对不相邻的行重复（再按 `<Space>` 取消标记）。对于连续范围，按 `v` 并上下移动：高亮选区随光标扩大。按 `<Space>` 将该范围加入标记，或按 `<Esc>`（或 `v`）取消。
+3. 在选择范围时按 `Y` 直接复制，无需提交标记。否则，`Y` 复制标记的行；没有标记时复制当前行。选择 SQL（`s`）、Markdown（`m`）、JSON（`j`）或 CSV（`c`）。CSV 和 Markdown 包含列表头；JSON 是对象数组。SQL 在记录表中生成 `INSERT`，在 SQL 编辑器结果中生成独立的 `VALUES` 语句（没有目标表时）。
 
-This works in both records tables and SQL editor results. `y` is unchanged: it copies marked rows as tab-separated values, or the selected cell when no rows are marked. Marks are cleared when results reload.
+这在记录表和 SQL 编辑器结果中都有效。`y` 保持不变：它把标记的行复制为制表符分隔的值，没有标记行时复制选中的单元格。结果重新加载时标记会清除。
 
-### Export to CSV
+### 导出为 CSV
 
-#### From Table View
+#### 从表视图
 
-1. [Open a table](#openview-a-table)
-2. Apply filters or sorting as needed
-3. Press `E` to open the export dialog
-4. Optionally modify the file path and batch size
-5. Select export scope:
-   - Export Current Page: Export only the currently displayed rows
-   - Export All Records: Fetch and export all records from the table
+1. [打开表](#打开或查看表)
+2. 按需应用过滤或排序
+3. 按 `E` 打开导出对话框
+4. 可选地修改文件路径和批量大小
+5. 选择导出范围：
+   - 导出当前页：只导出当前显示的行
+   - 导出全部记录：从表中获取并导出所有记录
 
-> Batch size (default: 10000): When exporting all records, data is fetched in batches to avoid timeout or memory issues with large tables. Increase for faster exports, decrease if you encounter any errors.
+> 批量大小（默认：10000）：导出全部记录时，数据按批获取，以避免大表出现超时或内存问题。增大可获得更快的导出，遇到错误时减小。
 >
-> The default file path is `~/Downloads/{database}_{table}_{timestamp}.csv`.
+> 默认文件路径是 `~/Downloads/{database}_{table}_{timestamp}.csv`。
 
-#### From SQL Editor
+#### 从 SQL 编辑器
 
-1. [Execute a SQL query](#execute-sql-queries)
-2. Press `E` to open the export dialog
-3. Optionally modify the file path
-4. Select **Export Visible Results** to save the rows currently shown
-5. For replay-safe/read-only statements, select **Export All Results** to reexecute the query and stream every row
+1. [执行 SQL 查询](#执行-sql-查询)
+2. 按 `E` 打开导出对话框
+3. 可选地修改文件路径
+4. 选择 **导出可见结果** 保存当前显示的行
+5. 对于可重放/只读语句，选择 **导出全部结果** 重新执行查询并流式导出每一行
 
-> Export All Results may reexecute the query and may take significant time. Unknown or potentially mutating statements offer visible-results export only. Press `Esc` during an export to cancel it; a cancelled or failed export leaves the requested destination unchanged.
+> 导出全部结果可能会重新执行查询，可能需要较长时间。未知或可能变更的语句只提供可见结果导出。导出过程中按 `Esc` 取消；已取消或失败的导出保持目标文件不变。
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
 
-## Support
+## 支持
 
 - [x] MySQL
 - [x] PostgreSQL
@@ -721,23 +619,19 @@ This works in both records tables and SQL editor results. `y` is unchanged: it c
 - [x] ClickHouse
 - [ ] MongoDB
 
-Support for multiple RDBMS is a work in progress.
+对多种 RDBMS 的支持仍在持续完善中。
 
 <!-- COMMANDS -->
 
-## Commands
+## 命令
 
-In some cases, mostly when connecting to remote databases, it might be necessary to run a custom command
-before being able to connect to the database. For example when you can only access the database through
-a remote bastion, you would probably first need to open an SSH tunnel by running the following command
-in a separate terminal:
+某些情况下，主要是连接远程数据库时，可能需要在连接数据库之前运行自定义命令。例如，当你只能通过远程堡垒机访问数据库时，可能需要在单独的终端中先打开 SSH 隧道：
 
 ```bash
 ssh remote-bastion -L 5432:localhost:5432
 ```
 
-In order to make it easier to run these commands, lazysql supports running custom commands before connecting
-to the database. You can define these commands in the configuration file like this:
+为了更方便地运行这些命令，lazysql 支持在连接数据库前运行自定义命令。你可以在配置文件中这样定义这些命令：
 
 ```toml
 [[database]]
@@ -751,16 +645,11 @@ Commands = [
 ]
 ```
 
-The `Command` field is required and can contain any command that you would normally run in your terminal.
-The `WaitForPort` field is optional and can be used to wait for a specific port to be open before continuing.
-The `SaveOutputTo` field is optional and can be used to make user-defined variables. The output (`stdout`) from the command will be saved into the variable, and the variable can be used in the URL or future commands via the `${VARIABLE}` syntax.
+`Command` 字段是必需的，可以包含任何你通常在终端中运行的命令。`WaitForPort` 字段可选，可用于在继续之前等待特定端口打开。`SaveOutputTo` 字段可选，可用于创建用户自定义变量。命令的输出（`stdout`）会被保存到该变量中，并可通过 `${VARIABLE}` 语法在 URL 或后续命令中使用。
 
-When you define the `${port}` variable in the URL field, lazysql will automatically replace it with a random
-free port number. This port number will then be used in the connection URL and is available in the `Commands`
-field so that you can use it to configure the command.
+当你在 URL 字段中定义 `${port}` 变量时，lazysql 会自动用随机空闲端口号替换它。该端口号随后用于连接 URL，并在 `Commands` 字段中可用，以便配置命令。
 
-You can even chain commands to, for example, connect to a remote server and then to a postgres container
-running in a remote k8s cluster:
+你甚至可以链式执行命令，例如先连接远程服务器，再连接远程 k8s 集群中运行的 postgres 容器：
 
 ```toml
 [[database]]
@@ -774,9 +663,9 @@ Commands = [
 ]
 ```
 
-## Environment variables
+## 环境变量
 
-You can use environment variables in the configuration file using the `${env:VAR_NAME}` syntax. This is useful for keeping sensitive information like passwords out of the configuration file.
+你可以在配置文件中使用 `${env:VAR_NAME}` 语法引用环境变量。这对于将密码等敏感信息排除在配置文件之外非常有用。
 
 ```toml
 [[database]]
@@ -791,15 +680,15 @@ export DB_PASSWORD=secret
 lazysql
 ```
 
-Note: Undefined environment variables will be replaced with an empty string.
+注意：未定义的环境变量会被替换为空字符串。
 
 <!-- KEYBINDINGS -->
 
-## Keybindings
+## 快捷键
 
-### Custom Keybindings
+### 自定义快捷键
 
-You can customize keybindings by adding a `[keymap.<Group>]` section to your `config.toml` file. Each entry maps a command name to a key.
+你可以通过在 `config.toml` 文件中添加 `[keymap.<Group>]` 段来自定义快捷键。每个条目把一个命令名映射到一个键。
 
 ```toml
 [keymap.Home]
@@ -812,198 +701,193 @@ Search = "Ctrl-F"
 
 ```
 
-For single character keys, use the character directly (e.g., `"q"`, `"G"`, `"1"`, `"/"`). For special keys, use the [tcell key name](https://github.com/gdamore/tcell/blob/v2.7.4/key.go#L83) (e.g., `"Enter"`, `"Esc"`, `"Ctrl-S"`). Only key names defined in tcell are supported.
+对于单字符键，直接使用该字符（例如 `"q"`、`"G"`、`"1"`、`"/"`）。对于特殊键，使用 [tcell 键名](https://github.com/gdamore/tcell/blob/v2.7.4/key.go#L83)（例如 `"Enter"`、`"Esc"`、`"Ctrl-S"`）。只支持 tcell 中定义的键名。
 
-Group names are case-insensitive (`Home`, `home`, and `HOME` all work).
+分组名不区分大小写（`Home`、`home` 和 `HOME` 都有效）。
 
-Available groups: `Home`, `Connection`, `Tree`, `TreeFilter`, `Table`, `Editor`, `Sidebar`, `QueryPreview`, `QueryHistory`, `JSONViewer`.
+可用分组：`Home`、`Connection`、`Tree`、`TreeFilter`、`Table`、`Editor`、`Sidebar`、`QueryPreview`、`QueryHistory`、`JSONViewer`。
 
-### Default Keybindings
+### 默认快捷键
 
 #### Home
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| L | MoveRight | Focus table |
-| H | MoveLeft | Focus tree |
-| Ctrl-E | SwitchToEditorView | Open SQL editor |
-| Ctrl-S | Save | Execute pending changes |
-| q | Quit | Quit |
-| Backspace | SwitchToConnectionsView | Switch to connections list |
-| ? | HelpPopup | Help |
-| Ctrl-P | SearchGlobal | Global search |
-| Ctrl-_ | ToggleQueryHistory | Toggle query history modal |
-| T | ToggleTree | Toggle file tree |
+| L | MoveRight | 聚焦表格 |
+| H | MoveLeft | 聚焦树 |
+| Ctrl-E | SwitchToEditorView | 打开 SQL 编辑器 |
+| Ctrl-S | Save | 执行待定更改 |
+| q | Quit | 退出 |
+| Backspace | SwitchToConnectionsView | 切换到连接列表 |
+| ? | HelpPopup | 帮助 |
+| Ctrl-P | SearchGlobal | 全局搜索 |
+| Ctrl-_ | ToggleQueryHistory | 切换查询历史弹窗 |
+| T | ToggleTree | 切换文件树 |
 
 #### Connection
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| n | NewConnection | Create a new database connection |
-| c | Connect | Connect to database |
-| Enter | Connect | Connect to database |
-| e | EditConnection | Edit a database connection |
-| d | DeleteConnection | Delete a database connection |
-| q | Quit | Quit |
+| n | NewConnection | 新建数据库连接 |
+| c | Connect | 连接数据库 |
+| Enter | Connect | 连接数据库 |
+| e | EditConnection | 编辑数据库连接 |
+| d | DeleteConnection | 删除数据库连接 |
+| q | Quit | 退出 |
 
 #### Tree
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| g | GotoTop | Go to top |
-| G | GotoBottom | Go to bottom |
-| Enter | Execute | Open |
-| j | MoveDown | Go down |
-| Down | MoveDown | Go down |
-| Ctrl-U | PagePrev | Go page up |
-| Ctrl-D | PageNext | Go page down |
-| k | MoveUp | Go up |
-| Up | MoveUp | Go up |
-| / | Search | Search |
-| n | NextFoundNode | Go to next found node |
-| N | PreviousFoundNode | Go to previous found node |
-| p | PreviousFoundNode | Go to previous found node |
-| P | NextFoundNode | Go to next found node |
-| c | TreeCollapseAll | Collapse all |
-| e | ExpandAll | Expand all |
-| R | Refresh | Refresh tree |
+| g | GotoTop | 跳到顶部 |
+| G | GotoBottom | 跳到底部 |
+| Enter | Execute | 打开 |
+| j | MoveDown | 向下 |
+| Down | MoveDown | 向下 |
+| Ctrl-U | PagePrev | 向上翻页 |
+| Ctrl-D | PageNext | 向下翻页 |
+| k | MoveUp | 向上 |
+| Up | MoveUp | 向上 |
+| / | Search | 搜索 |
+| n | NextFoundNode | 跳到下一个匹配节点 |
+| N | PreviousFoundNode | 跳到上一个匹配节点 |
+| p | PreviousFoundNode | 跳到上一个匹配节点 |
+| P | NextFoundNode | 跳到下一个匹配节点 |
+| c | TreeCollapseAll | 全部折叠 |
+| e | ExpandAll | 全部展开 |
+| R | Refresh | 刷新树 |
 
 #### Tree Filter
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| Esc | UnfocusTreeFilter | Unfocus tree filter |
-| Enter | CommitTreeFilter | Commit tree filter search |
+| Esc | UnfocusTreeFilter | 取消聚焦树过滤器 |
+| Enter | CommitTreeFilter | 提交树过滤器搜索 |
 
 #### Table
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| / | Search | Search |
-| c | Edit | Change cell |
-| d | Delete | Delete row |
-| w | GotoNext | Go to next cell |
-| b | GotoPrev | Go to previous cell |
-| $ | GotoEnd | Go to last cell |
-| 0 | GotoStart | Go to first cell |
-| Enter | ForeignKeyJump | Jump to the referenced row from a foreign key cell (see [Foreign Key Jump](#jump-to-a-referenced-row-foreign-key-jump)) |
-| y | Copy | Copy cell value to clipboard (or marked rows if any) |
-| Y | CopyRowsAs | Copy marked rows (or current row) as SQL, Markdown, JSON, CSV |
-| v | RowRange | Select a live row range; Esc cancels |
-| Space | RowSelect | Toggle row or commit visual range |
-| o | AppendNewRow | Append new row |
-| O | DuplicateRow | Duplicate row |
-| J | SortDesc | Sort descending |
-| R | Refresh | Refresh the current table |
-| # | ExactCount | Calculate or cancel the exact Records count |
-| K | SortAsc | Sort ascending |
-| C | SetValue | Toggle value menu (NULL, EMPTY, DEFAULT) |
-| [ | TabPrev | Switch to previous tab |
-| ] | TabNext | Switch to next tab |
-| { | TabFirst | Switch to first tab |
-| } | TabLast | Switch to last tab |
-| X | TabClose | Close tab |
-| > | PageNext | Switch to next page |
-| < | PagePrev | Switch to previous page |
-| 1 | RecordsMenu | Switch to records menu |
-| 2 | ColumnsMenu | Switch to columns menu |
-| 3 | ConstraintsMenu | Switch to constraints menu |
-| 4 | ForeignKeysMenu | Switch to foreign keys menu |
-| 5 | IndexesMenu | Switch to indexes menu |
-| S | ToggleSidebar | Toggle sidebar |
-| s | FocusSidebar | Focus sidebar |
-| Z | ShowRowJSONViewer | Toggle JSON viewer for row |
-| z | ShowCellJSONViewer | Toggle JSON viewer for cell |
-| f | ReverseForeignKeyJump | Pick a table referencing the current row and open it filtered |
-| E | ExportCSV | Export to CSV |
-| e | OpenCellInExternalEditor | Edit cell in external editor |
+| / | Search | 搜索 |
+| c | Edit | 修改单元格 |
+| d | Delete | 删除行 |
+| w | GotoNext | 跳到下一个单元格 |
+| b | GotoPrev | 跳到上一个单元格 |
+| $ | GotoEnd | 跳到最后一个单元格 |
+| 0 | GotoStart | 跳到第一个单元格 |
+| Enter | ForeignKeyJump | 从外键单元格跳转到被引用的行（参见 [外键跳转](#跳转到被引用的行外键跳转)） |
+| y | Copy | 复制单元格值到剪贴板（如有标记行则复制标记行） |
+| Y | CopyRowsAs | 将标记行（或当前行）复制为 SQL、Markdown、JSON、CSV |
+| v | RowRange | 选择实时行范围；Esc 取消 |
+| Space | RowSelect | 切换行或提交可视范围 |
+| o | AppendNewRow | 追加新行 |
+| O | DuplicateRow | 复制行 |
+| J | SortDesc | 降序排序 |
+| R | Refresh | 刷新当前表 |
+| # | ExactCount | 计算或取消精确记录数 |
+| K | SortAsc | 升序排序 |
+| C | SetValue | 切换值菜单（NULL、EMPTY、DEFAULT） |
+| [ | TabPrev | 切换到上一个标签页 |
+| ] | TabNext | 切换到下一个标签页 |
+| { | TabFirst | 切换到第一个标签页 |
+| } | TabLast | 切换到最后一个标签页 |
+| X | TabClose | 关闭标签页 |
+| > | PageNext | 切换到下一页 |
+| < | PagePrev | 切换到上一页 |
+| 1 | RecordsMenu | 切换到记录菜单 |
+| 2 | ColumnsMenu | 切换到列菜单 |
+| 3 | ConstraintsMenu | 切换到约束菜单 |
+| 4 | ForeignKeysMenu | 切换到外键菜单 |
+| 5 | IndexesMenu | 切换到索引菜单 |
+| S | ToggleSidebar | 切换侧边栏 |
+| s | FocusSidebar | 聚焦侧边栏 |
+| Z | ShowRowJSONViewer | 切换行的 JSON 查看器 |
+| z | ShowCellJSONViewer | 切换单元格的 JSON 查看器 |
+| f | ReverseForeignKeyJump | 选择引用当前行的表并打开过滤视图 |
+| E | ExportCSV | 导出为 CSV |
+| e | OpenCellInExternalEditor | 在外部编辑器中编辑单元格 |
 
-> `Enter` (`ForeignKeyJump`) only applies on the record tab (`1`) of a table view. It is part of the `Table` group, so it can be remapped like any other keybinding: `[keymap.Table] ForeignKeyJump = "Ctrl-G"`.
+> `Enter`（`ForeignKeyJump`）只在表视图的记录标签页（`1`）中生效。它属于 `Table` 分组，因此可以像其他快捷键一样重新映射：`[keymap.Table] ForeignKeyJump = "Ctrl-G"`。
 
 #### Editor
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| Ctrl-R | Execute | Execute query |
-| Esc | CancelQuery | Cancel the active query; otherwise preserve normal editor Escape behavior |
-| Ctrl-Space | OpenInExternalEditor | Open in external editor |
+| Ctrl-R | Execute | 执行查询 |
+| Esc | CancelQuery | 取消当前查询；否则保持编辑器正常的 Esc 行为 |
+| Ctrl-Space | OpenInExternalEditor | 在外部编辑器中打开 |
 
-Specific editor for lazysql can be set by `$SQL_EDITOR`.
+lazysql 的专用编辑器可以通过 `$SQL_EDITOR` 设置。
 
 ### JSON Viewer
 
-| Key | Action           |
+| 键 | 操作           |
 | --- | ---------------- |
-| w   | Toggle word wrap |
-| y   | Copy to clipboard|
-| z/Z | Close viewer     |
+| w   | 切换自动换行 |
+| y   | 复制到剪贴板 |
+| z/Z | 关闭查看器     |
 
-The JSON viewer can be opened by pressing `z` (cell) or `Z` (row) on a table cell. If `EnterOpensJSONViewer` is enabled, pressing Enter on a cell will also open the JSON viewer, unless the cell supports a [Foreign Key Jump](#jump-to-a-referenced-row-foreign-key-jump) (which takes precedence).
-
+JSON 查看器可以在表格单元格上按 `z`（单元格）或 `Z`（行）打开。如果启用了 `EnterOpensJSONViewer`，在单元格上按 Enter 也会打开 JSON 查看器，除非该单元格支持 [外键跳转](#跳转到被引用的行外键跳转)（优先执行跳转）。
 
 #### Sidebar
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| s | UnfocusSidebar | Focus table |
-| S | ToggleSidebar | Toggle sidebar |
-| j | MoveDown | Focus next field |
-| k | MoveUp | Focus previous field |
-| g | GotoStart | Focus first field |
-| G | GotoEnd | Focus last field |
-| c | Edit | Edit field |
-| Enter | CommitEdit | Add edit to pending changes |
-| Esc | DiscardEdit | Discard edit |
-| C | SetValue | Toggle value menu (NULL, EMPTY, DEFAULT) |
-| y | Copy | Copy value to clipboard |
+| s | UnfocusSidebar | 聚焦表格 |
+| S | ToggleSidebar | 切换侧边栏 |
+| j | MoveDown | 聚焦下一个字段 |
+| k | MoveUp | 聚焦上一个字段 |
+| g | GotoStart | 聚焦第一个字段 |
+| G | GotoEnd | 聚焦最后一个字段 |
+| c | Edit | 编辑字段 |
+| Enter | CommitEdit | 将修改加入待定更改 |
+| Esc | DiscardEdit | 放弃修改 |
+| C | SetValue | 切换值菜单（NULL、EMPTY、DEFAULT） |
+| y | Copy | 复制值到剪贴板 |
 
 #### Query Preview
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| Ctrl-S | Save | Execute queries |
-| q | Quit | Quit |
-| y | Copy | Copy query to clipboard |
-| d | Delete | Delete query |
+| Ctrl-S | Save | 执行查询 |
+| q | Quit | 退出 |
+| y | Copy | 复制查询到剪贴板 |
+| d | Delete | 删除查询 |
 
 #### Query History
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| s | Save | Save query |
-| d | Delete | Delete query |
-| q | Quit | Quit |
-| y | Copy | Copy query to clipboard |
-| / | Search | Search |
-| Ctrl-_ | ToggleQueryHistory | Toggle query history modal |
-| [ | TabPrev | Switch to previous tab |
-| ] | TabNext | Switch to next tab |
+| s | Save | 保存查询 |
+| d | Delete | 删除查询 |
+| q | Quit | 退出 |
+| y | Copy | 复制查询到剪贴板 |
+| / | Search | 搜索 |
+| Ctrl-_ | ToggleQueryHistory | 切换查询历史弹窗 |
+| [ | TabPrev | 切换到上一个标签页 |
+| ] | TabNext | 切换到下一个标签页 |
 
 #### JSON Viewer
 
-| Default Key | Command | Description |
+| 默认键 | 命令 | 说明 |
 | --- | --- | --- |
-| Z | ShowRowJSONViewer | Toggle JSON viewer |
-| z | ShowCellJSONViewer | Toggle JSON viewer |
-| y | Copy | Copy value to clipboard |
-| w | ToggleJSONViewerWrap | Toggle word wrap |
+| Z | ShowRowJSONViewer | 切换 JSON 查看器 |
+| z | ShowCellJSONViewer | 切换 JSON 查看器 |
+| y | Copy | 复制值到剪贴板 |
+| w | ToggleJSONViewerWrap | 切换自动换行 |
 
-### External Editor
+### 外部编辑器
 
-The external editor feature (CTRL + Space in SQL Editor, `e` in Table) uses the following environment variables to determine which editor to use:
+外部编辑器功能（SQL 编辑器中按 CTRL + Space，表格中按 `e`）使用以下环境变量决定使用哪个编辑器：
 
-- SQL Editor: `$SQL_EDITOR` > `$EDITOR` > `$VISUAL` > `vi`
-- Table cells: `$EDITOR` > `$VISUAL` > `vi`
+- SQL 编辑器：`$SQL_EDITOR` > `$EDITOR` > `$VISUAL` > `vi`
+- 表格单元格：`$EDITOR` > `$VISUAL` > `vi`
 
-Editor commands with flags are supported, e.g. `EDITOR="vim -u NONE"`. GUI editors
-should use the flag that blocks until the file is closed (such as `--wait` for VS
-Code or `-w` for Sublime Text), otherwise lazysql reads the file back before you
-finish editing.
+支持带参数的编辑器命令，例如 `EDITOR="vim -u NONE"`。GUI 编辑器应使用阻塞到文件关闭的参数（例如 VS Code 用 `--wait`，Sublime Text 用 `-w`），否则 lazysql 会在你完成编辑之前就读取文件。
 
-This feature is only available on Linux and macOS.
+此功能仅适用于 Linux 和 macOS。
 
-
-## Example connection URLs
+## 示例连接 URL
 
 ```
 postgres://user:pass@localhost/dbname
@@ -1024,67 +908,67 @@ clickhouse+http://user:pass@localhost:8123/dbname
 clickhouse+https://user:pass@remote-host.com:8443/dbname
 ```
 
-### ClickHouse notes
+### ClickHouse 说明
 
-- `clickhouse://` (alias `ch://`) uses the native protocol (port 9000 by default); `clickhouse+http://` and `clickhouse+https://` use the HTTP interface. Query parameters are passed to [clickhouse-go](https://github.com/ClickHouse/clickhouse-go#dsn), e.g. `?secure=true` for TLS on the native port.
-- The Constraints tab shows the table engine and its partition, sorting and primary keys. The Indexes tab shows data skipping indexes. ClickHouse has no foreign keys.
-- Row edits and deletes are run as mutations (`ALTER TABLE ... UPDATE/DELETE`) and wait for the mutation to finish. They only work on tables that support mutations (such as the MergeTree family), key columns cannot be updated, and ClickHouse primary keys are not unique: every row that shares the primary key values of the edited row is changed. Pending changes are not run in a transaction.
+- `clickhouse://`（别名 `ch://`）使用原生协议（默认端口 9000）；`clickhouse+http://` 和 `clickhouse+https://` 使用 HTTP 接口。查询参数传递给 [clickhouse-go](https://github.com/ClickHouse/clickhouse-go#dsn)，例如原生端口启用 TLS 用 `?secure=true`。
+- Constraints 标签页显示表引擎及其分区、排序键和主键。Indexes 标签页显示数据跳过索引。ClickHouse 没有外键。
+- 行编辑和删除以突变（mutation）方式执行（`ALTER TABLE ... UPDATE/DELETE`）并等待突变完成。它们只对支持突变的表有效（例如 MergeTree 系列），键列不能更新，ClickHouse 主键不唯一：与编辑行共享主键值的每一行都会被修改。待定更改不在事务中运行。
 
 <!-- ROADMAP -->
 
-## Roadmap
+## 路线图
 
-- [ ] Support for NoSQL databases
-- [ ] Columns and indexes creation through TUI
-- [x] Table tree input filter
-- [x] Custom keybindings
-- [x] Show keybindings on a modal
-- [x] Rewrite row `create`, `update` and `delete` logic
+- [ ] 支持 NoSQL 数据库
+- [ ] 通过 TUI 创建列和索引
+- [x] 表树输入过滤
+- [x] 自定义快捷键
+- [x] 在弹窗中显示快捷键
+- [x] 重写行的 `create`、`update` 和 `delete` 逻辑
 
-See the [open issues](https://github.com/jorgerojas26/lazysql/issues) for a full list of proposed features (and known issues).
+有关完整的功能建议（和已知问题）列表，请参见 [open issues](https://github.com/jorgerojas26/lazysql/issues)。
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
 
-## Clipboard support
+## 剪贴板支持
 
-We use [atotto/clipboard](https://github.com/atotto/clipboard?tab=readme-ov-file#clipboard-for-go) to copy to clipboard.
+我们使用 [atotto/clipboard](https://github.com/atotto/clipboard?tab=readme-ov-file#clipboard-for-go) 复制到剪贴板。
 
-Platforms:
+平台：
 
 - OSX
-- Windows 7 (probably work on other Windows)
-- Linux, Unix (requires 'xclip' or 'xsel' command to be installed)
+- Windows 7（其他 Windows 版本大概率可用）
+- Linux、Unix（需要安装 'xclip' 或 'xsel' 命令）
 
 <!-- CONTRIBUTING -->
 
-## Contributing
+## 参与贡献
 
-Contributions, issues, and pull requests are welcome!
+欢迎贡献、提 issue 和提交 pull request！
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
 
 <!-- LICENSE -->
 
-## License
+## 许可证
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+基于 MIT 许可证分发。更多信息请参见 `LICENSE.txt`。
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
 
 <!-- CONTACT -->
 
-## Contact
+## 联系方式
 
 Jorge Rojas - [LinkedIn](https://www.linkedin.com/in/jorgerojas26/) - jorgeluisrojasb@gmail.com
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
 
-## Alternatives
+## 备选方案
 
 - [Mitzasql](https://github.com/vladbalmos/mitzasql)
 - [Gobang](https://github.com/TaKO8Ki/gobang)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">返回顶部</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -1106,7 +990,7 @@ Jorge Rojas - [LinkedIn](https://www.linkedin.com/in/jorgerojas26/) - jorgeluisr
 [golang-shield]: https://img.shields.io/badge/Golang-gray?style=for-the-badge&logo=go
 [tview-shield]: https://img.shields.io/badge/tview-gray?style=for-the-badge&logo=go
 
-## Star History
+## Star 历史
 
 <a href="https://star-history.dera.page/#jorgerojas26/lazysql&type=date&legend=top-left">
  <picture>
