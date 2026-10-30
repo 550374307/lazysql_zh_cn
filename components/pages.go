@@ -4,6 +4,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 var (
@@ -33,12 +34,12 @@ func showQuitConfirmation() {
 		return
 	}
 
-	confirmationModal := NewConfirmationModal("Exit LazySQL?")
+	confirmationModal := NewConfirmationModal(i18n.T("Exit LazySQL?"))
 	quitConfirmationModal = confirmationModal
 	confirmationModal.SetDoneFunc(func(_ int, buttonLabel string) {
 		mainPages.RemovePage(pageNameConfirmation)
 		quitConfirmationModal = nil
-		if buttonLabel == confirmationYes {
+		if buttonLabel == i18n.T("Yes") {
 			app.App.Stop()
 		}
 	})

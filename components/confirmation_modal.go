@@ -5,6 +5,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 type ConfirmationModal struct {
@@ -13,19 +14,14 @@ type ConfirmationModal struct {
 	done func(buttonIndex int, buttonLabel string)
 }
 
-const (
-	confirmationYes = "Yes"
-	confirmationNo  = "No"
-)
-
 func NewConfirmationModal(confirmationText string) *ConfirmationModal {
 	modal := tview.NewModal()
 	if confirmationText != "" {
 		modal.SetText(confirmationText)
 	} else {
-		modal.SetText("Are you sure?")
+		modal.SetText(i18n.T("Are you sure?"))
 	}
-	modal.AddButtons([]string{confirmationYes, confirmationNo})
+	modal.AddButtons([]string{i18n.T("Yes"), i18n.T("No")})
 	modal.SetBackgroundColor(app.Styles.PrimitiveBackgroundColor)
 	modal.SetBorderStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor))
 	modal.SetButtonActivatedStyle(tcell.StyleDefault.
@@ -50,12 +46,12 @@ func (m *ConfirmationModal) SetDoneFunc(handler func(buttonIndex int, buttonLabe
 		switch event.Rune() {
 		case 'y', 'Y':
 			if m.done != nil {
-				m.done(0, confirmationYes)
+				m.done(0, i18n.T("Yes"))
 			}
 			return nil
 		case 'n', 'N':
 			if m.done != nil {
-				m.done(1, confirmationNo)
+				m.done(1, i18n.T("No"))
 			}
 			return nil
 		default:

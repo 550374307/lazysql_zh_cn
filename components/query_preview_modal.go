@@ -12,6 +12,7 @@ import (
 	"github.com/jorgerojas26/lazysql/commands"
 	"github.com/jorgerojas26/lazysql/drivers"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/lib"
 	"github.com/jorgerojas26/lazysql/models"
 )
@@ -41,13 +42,13 @@ func NewQueryPreviewModal(queries *[]models.DBDMLChange, dbdriver drivers.Driver
 
 	table.SetBorders(true)
 	table.SetBorder(true)
-	table.SetTitle(" Queries ")
+	table.SetTitle(i18n.T(" Queries "))
 	table.SetSelectable(true, false)
 	table.SetSelectedStyle(tcell.StyleDefault.Background(app.Styles.SecondaryTextColor).Foreground(tview.Styles.ContrastSecondaryTextColor))
 
 	errorModal := tview.NewModal()
-	errorModal.AddButtons([]string{"Ok"})
-	errorModal.SetText("An error occurred")
+	errorModal.AddButtons([]string{i18n.T("Ok")})
+	errorModal.SetText(i18n.T("An error occurred"))
 	errorModal.SetBackgroundColor(app.Styles.ErrorColor)
 	errorModal.SetTextColor(app.Styles.PrimaryTextColor)
 	errorModal.SetButtonStyle(tcell.StyleDefault.Foreground(app.Styles.PrimaryTextColor).Background(app.Styles.PrimitiveBackgroundColor))
@@ -58,10 +59,10 @@ func NewQueryPreviewModal(queries *[]models.DBDMLChange, dbdriver drivers.Driver
 	keybindings.SetRegions(true)
 	keybindings.SetWrap(false)
 	keybindings.SetBorder(true)
-	keybindings.SetTitle(" Keybindings ")
+	keybindings.SetTitle(i18n.T(" Keybindings "))
 
 	for _, command := range app.Keymaps.Group(app.QueryPreviewGroup) {
-		keybindings.SetText(fmt.Sprintf("%s [%s](%s) [-]%s", keybindings.GetText(false), app.Styles.SecondaryTextColor, command.Key.String(), command.Description))
+		keybindings.SetText(fmt.Sprintf("%s [%s](%s) [-]%s", keybindings.GetText(false), app.Styles.SecondaryTextColor, command.Key.String(), i18n.T(command.Description)))
 	}
 
 	container.AddItem(table, 0, 1, true)
@@ -81,10 +82,10 @@ func NewQueryPreviewModal(queries *[]models.DBDMLChange, dbdriver drivers.Driver
 		if command == commands.Quit || event.Key() == tcell.KeyEsc {
 			mainPages.RemovePage(pageNameDMLPreview)
 		} else if command == commands.Save {
-			confirmationModal := NewConfirmationModal("Are you sure you want to execute the queries?")
+			confirmationModal := NewConfirmationModal(i18n.T("Are you sure you want to execute the queries?"))
 
 			confirmationModal.SetDoneFunc(func(_ int, buttonLabel string) {
-				if buttonLabel == "Yes" {
+				if buttonLabel == i18n.T("Yes") {
 					err := dbdriver.ExecutePendingChanges(app.App.Context(), *queries)
 					if err != nil {
 						if removeAppliedPendingChanges(queries, err) {
@@ -117,10 +118,10 @@ func NewQueryPreviewModal(queries *[]models.DBDMLChange, dbdriver drivers.Driver
 		} else if command == commands.Delete {
 			row, _ := table.GetSelection()
 
-			confirmationModal := NewConfirmationModal("Are you sure you want to delete the query?")
+			confirmationModal := NewConfirmationModal(i18n.T("Are you sure you want to delete the query?"))
 
 			confirmationModal.SetDoneFunc(func(_ int, buttonLabel string) {
-				if buttonLabel == "Yes" {
+				if buttonLabel == i18n.T("Yes") {
 					*queries = slices.Delete((*queries), row, row+1)
 					table.Clear()
 					r.populateTable()

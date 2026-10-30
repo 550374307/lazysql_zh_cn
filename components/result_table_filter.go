@@ -7,6 +7,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/models"
 )
 
@@ -30,10 +31,10 @@ func NewResultsFilter() *ResultsTableFilter {
 	recordsFilter.SetBorderPadding(0, 0, 1, 1)
 
 	recordsFilter.Label.SetTextColor(app.Styles.TertiaryTextColor)
-	recordsFilter.Label.SetText("WHERE")
+	recordsFilter.Label.SetText(i18n.T("WHERE"))
 	recordsFilter.Label.SetBorderPadding(0, 0, 0, 1)
 
-	recordsFilter.Input.SetPlaceholder("Enter a WHERE clause to filter the results")
+	recordsFilter.Input.SetPlaceholder(i18n.T("Enter a WHERE clause to filter the results"))
 	recordsFilter.Input.SetPlaceholderStyle(tcell.StyleDefault.Foreground(app.Styles.PrimaryTextColor).Background(tview.Styles.PrimitiveBackgroundColor))
 	recordsFilter.Input.SetFieldBackgroundColor(app.Styles.PrimitiveBackgroundColor)
 	recordsFilter.Input.SetFieldTextColor(app.Styles.PrimaryTextColor)

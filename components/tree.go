@@ -18,6 +18,7 @@ import (
 	"github.com/jorgerojas26/lazysql/commands"
 	"github.com/jorgerojas26/lazysql/drivers"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/models"
 )
 
@@ -306,7 +307,7 @@ func NewTree(dbName string, dbdriver drivers.Driver, schemas []string) *Tree {
 	tree.Filter.SetPlaceholderStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(tview.Styles.InverseTextColor))
 	tree.Filter.SetBorderPadding(0, 0, 0, 0)
 	tree.Filter.SetBorderColor(app.Styles.PrimaryTextColor)
-	tree.Filter.SetLabel("Search: ")
+	tree.Filter.SetLabel(i18n.T("Search: "))
 	tree.Filter.SetLabelColor(app.Styles.InverseTextColor)
 
 	tree.Filter.SetFocusFunc(func() {

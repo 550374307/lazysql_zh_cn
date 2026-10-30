@@ -11,6 +11,7 @@ import (
 	"github.com/jorgerojas26/lazysql/commands"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
 	"github.com/jorgerojas26/lazysql/internal/history"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/lib"
 	"github.com/jorgerojas26/lazysql/models"
 )
@@ -47,7 +48,7 @@ func NewQueryHistoryComponent(connectionIdentifier string, onSelect func(query s
 	}
 
 	qhc.filterInput = tview.NewInputField().
-		SetLabel("Search: ").
+		SetLabel(i18n.T("Search: ")).
 		SetFieldWidth(30).SetFieldStyle(
 		tcell.StyleDefault.
 			Background(app.Styles.SecondaryTextColor).
@@ -63,7 +64,7 @@ func NewQueryHistoryComponent(connectionIdentifier string, onSelect func(query s
 
 	qhc.table.SetSelectedStyle(tcell.StyleDefault.Background(app.Styles.SecondaryTextColor).Foreground(tview.Styles.ContrastSecondaryTextColor))
 	qhc.table.SetBorderColor(app.Styles.PrimaryTextColor)
-	qhc.table.SetTitle(" Query History (Newest First) ")
+	qhc.table.SetTitle(i18n.T(" Query History (Newest First) "))
 
 	layout := tview.NewFlex().SetDirection(tview.FlexRow).
 		AddItem(qhc.filterInput, 2, 0, false).
@@ -152,7 +153,7 @@ func (qhc *QueryHistoryComponent) populateTable(items []models.QueryHistoryItem)
 		return qhc.displayedHistory[i].Timestamp.After(qhc.displayedHistory[j].Timestamp)
 	})
 
-	headers := []string{"Timestamp", "Query"}
+	headers := []string{i18n.T("Timestamp"), i18n.T("Query")}
 	for c, header := range headers {
 		qhc.table.SetCell(0, c, tview.NewTableCell(header).
 			SetSelectable(false).
@@ -197,9 +198,9 @@ func (qhc *QueryHistoryComponent) GetPrimitive() tview.Primitive {
 func (qhc *QueryHistoryComponent) SetIsFiltering(filtering bool) {
 	qhc.state.isFiltering = filtering
 	if filtering {
-		qhc.table.SetTitle(" Query History (Filtered) ")
+		qhc.table.SetTitle(i18n.T(" Query History (Filtered) "))
 	} else {
-		qhc.table.SetTitle(" Query History (Newest First) ")
+		qhc.table.SetTitle(i18n.T(" Query History (Newest First) "))
 	}
 }
 

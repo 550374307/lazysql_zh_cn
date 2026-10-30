@@ -7,6 +7,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 )
 
@@ -25,7 +26,7 @@ type telemetryPrompt struct {
 }
 
 func newTelemetryModal(endpoint string, done func(bool)) *telemetryPrompt {
-	text := tview.NewTextView().SetWordWrap(true).SetText(fmt.Sprintf(
+	text := tview.NewTextView().SetWordWrap(true).SetText(fmt.Sprintf(i18n.T(
 		"LazySQL collects minimal anonymous aggregate usage counts.\n\n"+
 			"We do NOT collect SQL, database/schema/table/column names, connection details, identifiers or personal information. "+
 			"No cookies or device metadata.\n\n"+
@@ -34,8 +35,8 @@ func newTelemetryModal(endpoint string, done func(bool)) *telemetryPrompt {
 			"Keep enabled is the default; Esc also keeps it enabled. Disable later with --no-telemetry or global telemetry.toml.\n\n"+
 			"The host sees your IP during delivery; only aggregates are stored (30-day retention target). "+
 			"Details: docs/telemetry.md in the repository.\n\n"+
-			"Up/Down: scroll. Tab: choose. Enter: confirm.", endpoint))
-	form := tview.NewForm().AddButton("Keep enabled", func() { done(true) }).AddButton("Disable", func() { done(false) }).
+			"Up/Down: scroll. Tab: choose. Enter: confirm."), endpoint))
+	form := tview.NewForm().AddButton(i18n.T("Keep enabled"), func() { done(true) }).AddButton(i18n.T("Disable"), func() { done(false) }).
 		SetButtonsAlign(tview.AlignCenter).SetCancelFunc(func() { done(true) })
 	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
@@ -46,7 +47,7 @@ func newTelemetryModal(endpoint string, done func(bool)) *telemetryPrompt {
 		return event
 	})
 	flex := tview.NewFlex().SetDirection(tview.FlexRow).AddItem(text, 0, 1, false).AddItem(form, 3, 0, true)
-	flex.SetBorder(true).SetTitle(" Anonymous usage counts ").SetBorderPadding(1, 1, 1, 1)
+	flex.SetBorder(true).SetTitle(i18n.T(" Anonymous usage counts ")).SetBorderPadding(1, 1, 1, 1)
 	return &telemetryPrompt{Flex: flex, text: text, form: form}
 }
 
@@ -103,9 +104,9 @@ func PrepareTelemetry(pages *tview.Pages, endpoint, version, preferencePath stri
 				return // No preference or send before the first disclosure draw.
 			}
 			if err := telemetry.SaveConsent(preferencePath, endpoint, consent); err != nil {
-				modal.text.SetText("Could not save your telemetry preference. Telemetry remains off. " +
-					"Use --no-telemetry to suppress this prompt next time.")
-				modal.form.Clear(true).AddButton("OK", closeModal).SetCancelFunc(closeModal)
+				modal.text.SetText(i18n.T("Could not save your telemetry preference. Telemetry remains off. " +
+					"Use --no-telemetry to suppress this prompt next time."))
+				modal.form.Clear(true).AddButton(i18n.T("OK"), closeModal).SetCancelFunc(closeModal)
 				app.App.SetFocus(modal)
 				if exiting {
 					app.App.Stop()

@@ -14,6 +14,7 @@ import (
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/commands"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 	"github.com/jorgerojas26/lazysql/models"
 )
@@ -35,13 +36,13 @@ const (
 func (m VimMode) String() string {
 	switch m {
 	case VimModeInsert:
-		return "-- INSERT --"
+		return i18n.T("-- INSERT --")
 	case VimModeNormal:
-		return "-- NORMAL --"
+		return i18n.T("-- NORMAL --")
 	case VimModeVisual:
-		return "-- VISUAL --"
+		return i18n.T("-- VISUAL --")
 	case VimModeVisualLine:
-		return "-- VISUAL LINE --"
+		return i18n.T("-- VISUAL LINE --")
 	default:
 		return ""
 	}
@@ -1417,7 +1418,7 @@ func (e *SQLEditor) drawSelection(screen tcell.Screen, x, y, width int, lineText
 
 func (e *SQLEditor) drawStatusBar(screen tcell.Screen, x, y, width int, _, _ tcell.Color) {
 	modeText := e.vimMode.String()
-	posText := "Ln " + itoa(e.cy+1) + ", Col " + itoa(cursorDisplayCol(e.lines, e.cy, e.cx, e.tabWidth)+1)
+	posText := i18n.Tf("Ln %d, Col %d", e.cy+1, cursorDisplayCol(e.lines, e.cy, e.cx, e.tabWidth)+1)
 
 	statusBg := app.Styles.EditorStatusBarBackgroundColor
 	statusFg := app.Styles.EditorStatusBarTextColor

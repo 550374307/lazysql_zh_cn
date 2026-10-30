@@ -5,6 +5,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/saved"
 )
 
@@ -27,9 +28,9 @@ func NewSaveQueryModal(connectionIdentifier, query string, onSave func()) *SaveQ
 	}
 
 	sqm.form = tview.NewForm().
-		AddInputField("Name", "", 20, nil, nil).
-		AddButton("Save", sqm.save).
-		AddButton("Cancel", sqm.cancel).SetFieldStyle(
+		AddInputField(i18n.T("Name"), "", 20, nil, nil).
+		AddButton(i18n.T("Save"), sqm.save).
+		AddButton(i18n.T("Cancel"), sqm.cancel).SetFieldStyle(
 		tcell.StyleDefault.
 			Background(app.Styles.SecondaryTextColor).
 			Foreground(app.Styles.ContrastSecondaryTextColor),
@@ -55,7 +56,7 @@ func NewSaveQueryModal(connectionIdentifier, query string, onSave func()) *SaveQ
 		return event
 	})
 
-	sqm.form.SetBorder(true).SetTitle(" Save Query ").SetTitleAlign(tview.AlignLeft)
+	sqm.form.SetBorder(true).SetTitle(i18n.T(" Save Query ")).SetTitleAlign(tview.AlignLeft)
 
 	sqm.grid = tview.NewGrid().
 		SetRows(0, 7, 0).

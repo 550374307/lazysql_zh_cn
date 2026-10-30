@@ -11,6 +11,7 @@ import (
 	"github.com/pelletier/go-toml/v2"
 
 	"github.com/jorgerojas26/lazysql/drivers"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/models"
 )
 
@@ -36,6 +37,8 @@ func defaultConfig() *Config {
 			JSONViewerWordWrap:           false,
 			EnterOpensJSONViewer:         false,
 			ConfirmOnQuit:                true,
+			Language:                     "zh",
+			LanguageFile:                 "",
 			MaxOpenConnections:           models.DefaultMaxOpenConnections,
 			MaxIdleConnections:           models.DefaultMaxIdleConnections,
 			ExactCountThreshold:          models.DefaultExactCountThreshold,
@@ -225,6 +228,12 @@ func LoadConfig(configFile string) error {
 		return err
 	}
 
+	// Initialize the UI language after configuration is fully loaded so
+	// application.language and application.language_file take effect.
+	if err := InitializeI18n(App.config.AppConfig); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -239,6 +248,25 @@ func expandEnvVars(s string) string {
 		// Keep non-env variables unchanged (e.g., ${port})
 		return "${" + key + "}"
 	})
+}
+
+// InitializeI18n applies the configured language and an optional custom
+// language file to the global i18n state. It is called by LoadConfig after
+// all configuration (including local overrides) has been merged.
+func InitializeI18n(config *models.AppConfig) error {
+	lang := i18n.DefaultLanguage
+	if config != nil && strings.TrimSpace(config.Language) != "" {
+		lang = config.Language
+	}
+	if err := i18n.SetLanguage(lang); err != nil {
+		return err
+	}
+	if config != nil && strings.TrimSpace(config.LanguageFile) != "" {
+		if err := i18n.LoadCustomFile(config.LanguageFile); err != nil {
+			return fmt.Errorf("language_file: %w", err)
+		}
+	}
+	return nil
 }
 
 // SaveConnections writes the connection list back to the file it came from:

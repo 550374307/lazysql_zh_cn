@@ -11,6 +11,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/lib"
 )
 
@@ -46,7 +47,7 @@ func (table *ResultsTable) showCopyRowsAs(current int) {
 		return
 	}
 	list := tview.NewList().ShowSecondaryText(false)
-	list.SetBorder(true).SetTitle(" Copy rows as ")
+	list.SetBorder(true).SetTitle(i18n.T(" Copy rows as "))
 	list.SetBackgroundColor(app.Styles.PrimitiveBackgroundColor)
 	list.SetBorderColor(app.Styles.PrimaryTextColor)
 	closePicker := func() {

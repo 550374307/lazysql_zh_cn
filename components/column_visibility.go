@@ -1,7 +1,6 @@
 package components
 
 import (
-	"fmt"
 	"slices"
 
 	"github.com/gdamore/tcell/v2"
@@ -9,6 +8,7 @@ import (
 
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/commands"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 type visibleColumnContent struct {
@@ -167,9 +167,9 @@ func (table *ResultsTable) refreshColumnVisibility() {
 				break
 			}
 		}
-		title := fmt.Sprintf(" Columns [%s] ", shortcut)
+		title := i18n.Tf(" Columns [%s] ", shortcut)
 		if count := len(headers) - len(visible); count > 0 {
-			title = fmt.Sprintf(" Columns [%s] · %d hidden ", shortcut, count)
+			title = i18n.Tf(" Columns [%s] · %d hidden ", shortcut, count)
 		}
 		table.Pagination.SetTitle(tview.Escape(title))
 	}

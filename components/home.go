@@ -14,6 +14,7 @@ import (
 	"github.com/jorgerojas26/lazysql/drivers"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
 	"github.com/jorgerojas26/lazysql/internal/history"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 	"github.com/jorgerojas26/lazysql/models"
 )
@@ -105,7 +106,7 @@ func NewHomePage(connection models.Connection, dbdriver drivers.Driver) *Home {
 	leftWrapper.AddItem(tree.Wrapper, 0, 1, true)
 
 	if connection.ReadOnly {
-		leftWrapper.SetTitle(" [READ-ONLY] ")
+		leftWrapper.SetTitle(i18n.T(" [READ-ONLY] "))
 		leftWrapper.SetTitleColor(app.Styles.ReadOnlyColor)
 		leftWrapper.SetBorder(true)
 	}
@@ -632,8 +633,8 @@ func (home *Home) homeInputCapture(event *tcell.EventKey) *tcell.EventKey {
 	case commands.Save:
 		if home.ReadOnly {
 			errorModal := tview.NewModal().
-				SetText("Cannot save changes: Connection is in read-only mode").
-				AddButtons([]string{"OK"}).
+				SetText(i18n.T("Cannot save changes: Connection is in read-only mode")).
+				AddButtons([]string{i18n.T("OK")}).
 				SetDoneFunc(func(_ int, _ string) {
 					mainPages.RemovePage(pageNameReadOnlyError)
 				})

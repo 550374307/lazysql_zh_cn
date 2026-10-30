@@ -11,6 +11,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 )
 
@@ -75,28 +76,28 @@ func NewCSVExportModal(opts CSVExportOptions, onExport func(filePath string, sco
 	defaultPath := filepath.Join(getDefaultExportDir(), fileName)
 
 	cem.form = tview.NewForm().
-		AddInputField("File Path", defaultPath, 0, nil, nil)
+		AddInputField(i18n.T("File Path"), defaultPath, 0, nil, nil)
 
 	if opts.HasPagination {
 		// Add batch size field for table view (used for Export All Records)
-		cem.form.AddInputField("Batch Size", strconv.Itoa(defaultBatchSize), 0, nil, nil)
+		cem.form.AddInputField(i18n.T("Batch Size"), strconv.Itoa(defaultBatchSize), 0, nil, nil)
 
 		// Table view: show both options
-		cem.form.AddButton("Export Current Page", func() {
+		cem.form.AddButton(i18n.T("Export Current Page"), func() {
 			cem.export(ExportCurrentPage)
 		})
-		cem.form.AddButton("Export All Records", func() {
+		cem.form.AddButton(i18n.T("Export All Records"), func() {
 			cem.export(ExportAllRecords)
 		})
 	} else {
 		// Query results always support exporting the rows already shown. Export
 		// All is separate because it may need to execute the original statement
 		// again and is offered only for replay-safe queries.
-		cem.form.AddButton("Export Visible Results", func() {
+		cem.form.AddButton(i18n.T("Export Visible Results"), func() {
 			cem.export(ExportVisibleResults)
 		})
 		if opts.CanExportAll {
-			cem.form.AddButton("Export All Results", func() {
+			cem.form.AddButton(i18n.T("Export All Results"), func() {
 				cem.export(ExportAllResults)
 			})
 		}
@@ -124,15 +125,15 @@ func NewCSVExportModal(opts CSVExportOptions, onExport func(filePath string, sco
 
 	cem.form.SetBorder(false)
 
-	hintText := "Esc to cancel"
+	hintText := i18n.T("Esc to cancel")
 	if opts.IsQueryResult && opts.CanExportAll {
-		hintText = "Export All Results may reexecute this query and may take significant time.\nEsc to cancel"
+		hintText = i18n.T("Export All Results may reexecute this query and may take significant time.\nEsc to cancel")
 	} else if opts.IsQueryResult {
 		reason := opts.ExportAllUnavailableReason
 		if reason == "" {
-			reason = "query is not classified as replay-safe"
+			reason = i18n.T("query is not classified as replay-safe")
 		}
-		hintText = fmt.Sprintf("Export All Results unavailable: %s.\nEsc to cancel", reason)
+		hintText = i18n.Tf("Export All Results unavailable: %s.\nEsc to cancel", reason)
 	}
 	hint := tview.NewTextView().
 		SetText(hintText).
@@ -147,7 +148,7 @@ func NewCSVExportModal(opts CSVExportOptions, onExport func(filePath string, sco
 		SetDirection(tview.FlexRow).
 		AddItem(cem.form, 0, 1, true).
 		AddItem(hint, hintHeight, 0, false)
-	formWithHint.SetBorder(true).SetTitle(" Export to CSV ").SetTitleAlign(tview.AlignLeft)
+	formWithHint.SetBorder(true).SetTitle(i18n.T(" Export to CSV ")).SetTitleAlign(tview.AlignLeft)
 
 	grid := tview.NewGrid().
 		SetRows(0, 13, 0).
@@ -162,7 +163,7 @@ func NewCSVExportModal(opts CSVExportOptions, onExport func(filePath string, sco
 func (cem *CSVExportModal) export(scope CSVExportScope) {
 	filePath := cem.form.GetFormItem(0).(*tview.InputField).GetText()
 	if filePath == "" {
-		cem.showErrorModal("File path cannot be empty")
+		cem.showErrorModal(i18n.T("File path cannot be empty"))
 		return
 	}
 
@@ -172,7 +173,7 @@ func (cem *CSVExportModal) export(scope CSVExportScope) {
 		var err error
 		batchSize, err = strconv.Atoi(batchSizeText)
 		if err != nil || batchSize <= 0 {
-			cem.showErrorModal("Batch size must be a positive integer")
+			cem.showErrorModal(i18n.T("Batch size must be a positive integer"))
 			return
 		}
 	}

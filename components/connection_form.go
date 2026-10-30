@@ -1,7 +1,6 @@
 package components
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/gdamore/tcell/v2"
@@ -10,6 +9,7 @@ import (
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/drivers"
 	"github.com/jorgerojas26/lazysql/helpers"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 	"github.com/jorgerojas26/lazysql/models"
 )
@@ -27,35 +27,35 @@ func NewConnectionForm(connectionPages *models.ConnectionPages) *ConnectionForm 
 	wrapper.SetDirection(tview.FlexColumnCSS)
 
 	addForm := tview.NewForm().SetFieldBackgroundColor(app.Styles.InverseTextColor).SetButtonBackgroundColor(tview.Styles.InverseTextColor).SetLabelColor(tview.Styles.PrimaryTextColor).SetFieldTextColor(tview.Styles.ContrastSecondaryTextColor)
-	addForm.AddInputField("Name", "", 0, nil, nil)
-	addForm.AddInputField("URL", "", 0, nil, nil)
-	addForm.AddCheckbox("Read-Only", false, nil)
-	addForm.AddCheckbox("Show all databases in this instance", false, nil)
+	addForm.AddInputField(i18n.T("Name"), "", 0, nil, nil)
+	addForm.AddInputField(i18n.T("URL"), "", 0, nil, nil)
+	addForm.AddCheckbox(i18n.T("Read-Only"), false, nil)
+	addForm.AddCheckbox(i18n.T("Show all databases in this instance"), false, nil)
 
 	buttonsWrapper := tview.NewFlex().SetDirection(tview.FlexColumn)
 
-	saveButton := tview.NewButton(fmt.Sprintf("[%s]F1 [-]Save", app.Styles.SecondaryTextColor))
+	saveButton := tview.NewButton(i18n.Tf("[%s]F1 [-]Save", app.Styles.SecondaryTextColor))
 	saveButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	saveButton.SetBorder(true)
 
 	buttonsWrapper.AddItem(saveButton, 0, 1, false)
 	buttonsWrapper.AddItem(nil, 1, 0, false)
 
-	testButton := tview.NewButton(fmt.Sprintf("[%s]F2 [-]Test", app.Styles.SecondaryTextColor))
+	testButton := tview.NewButton(i18n.Tf("[%s]F2 [-]Test", app.Styles.SecondaryTextColor))
 	testButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	testButton.SetBorder(true)
 
 	buttonsWrapper.AddItem(testButton, 0, 1, false)
 	buttonsWrapper.AddItem(nil, 1, 0, false)
 
-	connectButton := tview.NewButton(fmt.Sprintf("[%s]F3 [-]Connect", app.Styles.SecondaryTextColor))
+	connectButton := tview.NewButton(i18n.Tf("[%s]F3 [-]Connect", app.Styles.SecondaryTextColor))
 	connectButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	connectButton.SetBorder(true)
 
 	buttonsWrapper.AddItem(connectButton, 0, 1, false)
 	buttonsWrapper.AddItem(nil, 1, 0, false)
 
-	cancelButton := tview.NewButton(fmt.Sprintf("[%s]Esc [-]Cancel", app.Styles.SecondaryTextColor))
+	cancelButton := tview.NewButton(i18n.Tf("[%s]Esc [-]Cancel", app.Styles.SecondaryTextColor))
 	cancelButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	cancelButton.SetBorder(true)
 
@@ -87,7 +87,7 @@ func (form *ConnectionForm) inputCapture(connectionPages *models.ConnectionPages
 			connectionName := form.GetFormItem(0).(*tview.InputField).GetText()
 
 			if connectionName == "" {
-				form.StatusText.SetText("Connection name is required").SetTextStyle(tcell.StyleDefault.Foreground(app.Styles.ErrorColor).Background(app.Styles.PrimitiveBackgroundColor))
+				form.StatusText.SetText(i18n.T("Connection name is required")).SetTextStyle(tcell.StyleDefault.Foreground(app.Styles.ErrorColor).Background(app.Styles.PrimitiveBackgroundColor))
 				return event
 			}
 
@@ -184,7 +184,7 @@ func (form *ConnectionForm) testConnection(connectionString string) {
 		return
 	}
 
-	form.StatusText.SetText("Connecting...").SetTextColor(app.Styles.TertiaryTextColor)
+	form.StatusText.SetText(i18n.T("Connecting...")).SetTextColor(app.Styles.TertiaryTextColor)
 
 	poolConfig, err := app.App.Config().EffectiveConnectionPool(models.Connection{Provider: parsed.Driver})
 	if err != nil {
@@ -216,7 +216,7 @@ func (form *ConnectionForm) testConnection(connectionString string) {
 		usage.ConnectionFailed(telemetry.ConnectionFailure(err))
 		form.StatusText.SetText(err.Error()).SetTextStyle(tcell.StyleDefault.Foreground(app.Styles.ErrorColor).Background(app.Styles.PrimitiveBackgroundColor))
 	} else {
-		form.StatusText.SetText("Connection success").SetTextColor(app.Styles.TertiaryTextColor)
+		form.StatusText.SetText(i18n.T("Connection success")).SetTextColor(app.Styles.TertiaryTextColor)
 	}
 	App.ForceDraw()
 }

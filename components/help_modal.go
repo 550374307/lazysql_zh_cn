@@ -8,6 +8,7 @@ import (
 
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/commands"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/keymap"
 )
 
@@ -54,11 +55,11 @@ func NewHelpModal() *HelpModal {
 
 	modal.Table.SetBorder(true)
 	modal.Table.SetBorderColor(app.Styles.PrimaryTextColor)
-	modal.Table.SetTitle(" Keybindings ")
+	modal.Table.SetTitle(i18n.T(" Keybindings "))
 	modal.Table.SetSelectable(true, false)
 	modal.Table.SetSelectedStyle(tcell.StyleDefault.Background(app.Styles.SecondaryTextColor).Foreground(tview.Styles.ContrastSecondaryTextColor))
 
-	modal.Filter.SetLabel("Search keybinding: ")
+	modal.Filter.SetLabel(i18n.T("Search keybinding: "))
 	modal.Filter.SetFieldWidth(30)
 	modal.Filter.SetFieldBackgroundColor(app.Styles.PrimitiveBackgroundColor)
 	modal.Filter.SetChangedFunc(func(text string) {
@@ -130,8 +131,9 @@ func (modal *HelpModal) fillTable(filter string) {
 	for _, group := range modal.KeybindGroups {
 		var groupBinds []keymap.Bind
 		for _, bind := range group.Binds {
+			description := i18n.T(bind.Description)
 			if filter != "" &&
-				!strings.Contains(strings.ReplaceAll(strings.ToLower(bind.Description), " ", ""), strings.ReplaceAll(strings.ToLower(filter), " ", "")) &&
+				!strings.Contains(strings.ReplaceAll(strings.ToLower(description), " ", ""), strings.ReplaceAll(strings.ToLower(filter), " ", "")) &&
 				!strings.Contains(strings.ReplaceAll(strings.ToLower(bind.Key.String()), " ", ""), strings.ReplaceAll(strings.ToLower(filter), " ", "")) {
 				continue
 			}
@@ -147,7 +149,7 @@ func (modal *HelpModal) fillTable(filter string) {
 
 	for _, group := range filtered {
 		rowCount := modal.Table.GetRowCount()
-		groupNameCell := tview.NewTableCell(strings.ToUpper(group.Group))
+		groupNameCell := tview.NewTableCell(strings.ToUpper(i18n.T("keymap.group." + group.Group)))
 		groupNameCell.SetTextColor(app.Styles.TertiaryTextColor)
 		groupNameCell.SetSelectable(rowCount == 0)
 
@@ -162,7 +164,7 @@ func (modal *HelpModal) fillTable(filter string) {
 				keyText = strings.Repeat(" ", len(modal.LongestKey)-len(keyText)) + keyText
 			}
 			modal.Table.SetCell(rowCount+3+i, 0, tview.NewTableCell(keyText).SetAlign(tview.AlignRight).SetTextColor(app.Styles.SecondaryTextColor))
-			modal.Table.SetCell(rowCount+3+i, 1, tview.NewTableCell(key.Description).SetAlign(tview.AlignLeft).SetExpansion(1))
+			modal.Table.SetCell(rowCount+3+i, 1, tview.NewTableCell(i18n.T(key.Description)).SetAlign(tview.AlignLeft).SetExpansion(1))
 		}
 
 	}

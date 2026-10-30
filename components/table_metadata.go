@@ -11,6 +11,7 @@ import (
 
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 // MetadataKind identifies one independently loaded piece of table metadata.
@@ -627,9 +628,9 @@ func metadataDisplayName(kind MetadataKind) string {
 	case MetadataIndexes:
 		return menuIndexes
 	case MetadataPrimaryKeys:
-		return "Primary Keys"
+		return i18n.T("Primary Keys")
 	default:
-		return "Metadata"
+		return i18n.T("Metadata")
 	}
 }
 
@@ -637,7 +638,7 @@ func metadataDisplayName(kind MetadataKind) string {
 // metadata value remains untouched, while the user gets an explicit retry hint.
 func (table *ResultsTable) showMetadataSurface(kind MetadataKind) {
 	if table.GetMetadataState(kind) == MetadataFailed {
-		table.UpdateRows([][]string{{fmt.Sprintf("%s unavailable — press R to retry", metadataDisplayName(kind))}})
+		table.UpdateRows([][]string{{i18n.Tf("%s unavailable — press R to retry", metadataDisplayName(kind))}})
 		return
 	}
 
@@ -692,8 +693,8 @@ func (table *ResultsTable) updatePrimaryKeyIndicator(primaryKeyColumnNames []str
 	}
 
 	currentText := table.Pagination.textView.GetText(false)
-	if !strings.Contains(currentText, "⚠ No Primary Key") {
-		table.Pagination.textView.SetText(currentText + " ⚠ No Primary Key")
+	if !strings.Contains(currentText, i18n.T("⚠ No Primary Key")) {
+		table.Pagination.textView.SetText(currentText + i18n.T(" ⚠ No Primary Key"))
 	}
 }
 

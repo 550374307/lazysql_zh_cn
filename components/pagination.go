@@ -1,13 +1,13 @@
 package components
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 type CountState uint8
@@ -47,7 +47,7 @@ func NewPagination() *Pagination {
 	wrapper.SetBorder(true)
 
 	textView := tview.NewTextView()
-	textView.SetText("0-0+ rows [# exact]")
+	textView.SetText(i18n.T("0-0+ rows [# exact]"))
 	textView.SetTextAlign(tview.AlignCenter)
 
 	wrapper.AddItem(textView, 0, 1, false)
@@ -276,15 +276,15 @@ func (pagination *Pagination) render() {
 
 	switch pagination.state.countState {
 	case CountCounting:
-		text += " [Counting…] [# cancel]"
+		text += i18n.T(" [Counting…] [# cancel]")
 	case CountFailed:
-		text += fmt.Sprintf(" [Count failed: %s] [# retry]", pagination.state.countError)
+		text += i18n.Tf(" [Count failed: %s] [# retry]", pagination.state.countError)
 	case CountUnknown, CountEstimated:
-		text += " [# exact]"
+		text += i18n.T(" [# exact]")
 	}
 
 	if pagination.state.loading {
-		text += " [Loading...]"
+		text += i18n.T(" [Loading...]")
 	}
 	if pagination.state.resultStatus != "" {
 		text += " " + pagination.state.resultStatus
@@ -314,15 +314,15 @@ func (pagination *Pagination) baseText() string {
 			end = intFromInt64(total)
 		}
 		if total == 0 {
-			return "0-0 of 0 rows"
+			return i18n.T("0-0 of 0 rows")
 		}
-		return fmt.Sprintf("%d-%d of %d rows", start, end, total)
+		return i18n.Tf("%d-%d of %d rows", start, end, total)
 	}
 	if pagination.state.EstimatedTotal != nil {
-		return fmt.Sprintf("%d-%d of ~%s rows", start, end, formatApproximateCount(*pagination.state.EstimatedTotal))
+		return i18n.Tf("%d-%d of ~%s rows", start, end, formatApproximateCount(*pagination.state.EstimatedTotal))
 	}
 
-	return fmt.Sprintf("%d-%d+ rows", start, end)
+	return i18n.Tf("%d-%d+ rows", start, end)
 }
 
 func formatApproximateCount(count int64) string {

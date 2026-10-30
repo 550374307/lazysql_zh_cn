@@ -14,6 +14,7 @@ import (
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/components"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 )
 
@@ -37,17 +38,17 @@ func main() {
 		fmt.Fprintln(f, "")
 		fmt.Fprintf(f, "Usage:  %s [options] [connection_url]\n\n", os.Args[0])
 		fmt.Fprintln(f, "  connection_url")
-		fmt.Fprintln(f, "        database URL to connect to. Omit to start in picker mode")
+		fmt.Fprintln(f, "        "+i18n.T("database URL to connect to. Omit to start in picker mode"))
 		fmt.Fprintln(f, "")
 		fmt.Fprintln(f, "Options:")
 		flag.PrintDefaults()
 	}
-	configFile := flag.String("config", defaultConfigPath, "config file to use")
-	printVersion := flag.Bool("version", false, "Show version")
-	logLevel := flag.String("loglevel", "info", "Log level")
-	logFile := flag.String("logfile", "", "Log file")
-	readOnly := flag.Bool("read-only", false, "Connect in read-only mode")
-	noTelemetry := flag.Bool("no-telemetry", false, "Disable telemetry and its disclosure")
+	configFile := flag.String("config", defaultConfigPath, i18n.T("config file to use"))
+	printVersion := flag.Bool("version", false, i18n.T("Show version"))
+	logLevel := flag.String("loglevel", "info", i18n.T("Log level"))
+	logFile := flag.String("logfile", "", i18n.T("Log file"))
+	readOnly := flag.Bool("read-only", false, i18n.T("Connect in read-only mode"))
+	noTelemetry := flag.Bool("no-telemetry", false, i18n.T("Disable telemetry and its disclosure"))
 	flag.Parse()
 
 	if *printVersion {
@@ -96,7 +97,7 @@ func main() {
 			log.Fatal(err)
 		}
 	default:
-		log.Fatal("Only a single connection is allowed")
+		log.Fatal(i18n.T("Only a single connection is allowed"))
 	}
 
 	stopTelemetry := components.PrepareTelemetry(mainPages, telemetryEndpoint, version,

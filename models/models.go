@@ -26,6 +26,8 @@ type AppConfig struct {
 	JSONViewerWordWrap           bool
 	EnterOpensJSONViewer         bool
 	ConfirmOnQuit                bool
+	Language                     string `toml:"language"`
+	LanguageFile                 string `toml:"language_file"`
 	MaxOpenConnections           int `toml:"max_open_connections"`
 	MaxIdleConnections           int `toml:"max_idle_connections"`
 	ExactCountThreshold          int `toml:"exact_count_threshold"`

@@ -12,6 +12,7 @@ import (
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/commands"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 	"github.com/jorgerojas26/lazysql/lib"
 )
@@ -30,7 +31,7 @@ func NewJSONViewer(pages *tview.Pages) *JSONViewer {
 		SetDynamicColors(true).
 		SetScrollable(true).
 		SetWrap(wrapEnabled)
-	textView.SetBorder(true).SetTitle(" JSON Viewer ")
+	textView.SetBorder(true).SetTitle(i18n.T(" JSON Viewer "))
 
 	flex := tview.NewFlex().
 		AddItem(nil, 0, 1, false).
@@ -102,7 +103,7 @@ func (v *JSONViewer) Show(rowData map[string]string, focus tview.Primitive) {
 
 	jsonData, err := json.MarshalIndent(dataToFormat, "", "  ")
 	if err != nil {
-		v.TextView.SetText(fmt.Sprintf("Error: %v", err))
+		v.TextView.SetText(i18n.Tf("Error: %v", err))
 	} else {
 		highlightedJSON := colorizeJSON(tview.Escape(string(jsonData)))
 		v.TextView.SetText(highlightedJSON)

@@ -23,6 +23,7 @@ import (
 	"github.com/jorgerojas26/lazysql/helpers"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
 	"github.com/jorgerojas26/lazysql/internal/history"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 	"github.com/jorgerojas26/lazysql/lib"
 	"github.com/jorgerojas26/lazysql/models"
@@ -203,8 +204,8 @@ func NewResultsTable(listOfDBChanges *[]models.DBDMLChange, tree *Tree, dbdriver
 	wrapper.SetDirection(tview.FlexColumnCSS)
 
 	errorModal := tview.NewModal()
-	errorModal.AddButtons([]string{"Ok"})
-	errorModal.SetText("An error occurred")
+	errorModal.AddButtons([]string{i18n.T("Ok")})
+	errorModal.SetText(i18n.T("An error occurred"))
 	errorModal.SetBackgroundColor(app.Styles.ErrorColor)
 	errorModal.SetTextColor(app.Styles.PrimaryTextColor)
 	errorModal.SetButtonStyle(tcell.StyleDefault.Foreground(app.Styles.PrimaryTextColor).Background(app.Styles.PrimitiveBackgroundColor))
@@ -285,7 +286,7 @@ func (table *ResultsTable) WithFilter() *ResultsTable {
 		tableContainer.SetBorder(true)
 
 		if table.ReadOnly {
-			tableContainer.SetTitle(" [READ-ONLY] ")
+			tableContainer.SetTitle(i18n.T(" [READ-ONLY] "))
 			tableContainer.SetTitleColor(app.Styles.ReadOnlyColor)
 		}
 
@@ -727,7 +728,7 @@ func (table *ResultsTable) tableInputCapture(event *tcell.EventKey) *tcell.Event
 	switch command {
 	case commands.AppendNewRow:
 		if table.ReadOnly {
-			table.SetError("Cannot modify data: Connection is in read-only mode", nil)
+			table.SetError(i18n.T("Cannot modify data: Connection is in read-only mode"), nil)
 			return nil
 		}
 		if table.Menu.GetSelectedOption() == 1 {
@@ -735,7 +736,7 @@ func (table *ResultsTable) tableInputCapture(event *tcell.EventKey) *tcell.Event
 		}
 	case commands.DuplicateRow:
 		if table.ReadOnly {
-			table.SetError("Cannot modify data: Connection is in read-only mode", nil)
+			table.SetError(i18n.T("Cannot modify data: Connection is in read-only mode"), nil)
 			return nil
 		}
 		if table.Menu.GetSelectedOption() == 1 {
@@ -751,7 +752,7 @@ func (table *ResultsTable) tableInputCapture(event *tcell.EventKey) *tcell.Event
 
 	if command == commands.Edit {
 		if table.ReadOnly {
-			table.SetError("Cannot modify data: Connection is in read-only mode", nil)
+			table.SetError(i18n.T("Cannot modify data: Connection is in read-only mode"), nil)
 			return nil
 		}
 		if table.Editor == nil {
@@ -791,7 +792,7 @@ func (table *ResultsTable) tableInputCapture(event *tcell.EventKey) *tcell.Event
 		}
 	} else if command == commands.Delete {
 		if table.ReadOnly {
-			table.SetError("Cannot modify data: Connection is in read-only mode", nil)
+			table.SetError(i18n.T("Cannot modify data: Connection is in read-only mode"), nil)
 			return nil
 		}
 		if table.Menu != nil && table.Menu.GetSelectedOption() == 1 && table.Editor == nil {
@@ -818,7 +819,7 @@ func (table *ResultsTable) tableInputCapture(event *tcell.EventKey) *tcell.Event
 		}
 	} else if command == commands.SetValue {
 		if table.ReadOnly {
-			table.SetError("Cannot modify data: Connection is in read-only mode", nil)
+			table.SetError(i18n.T("Cannot modify data: Connection is in read-only mode"), nil)
 			return nil
 		}
 		if table.Editor == nil {
@@ -905,7 +906,7 @@ func (table *ResultsTable) tableInputCapture(event *tcell.EventKey) *tcell.Event
 		}
 	} else if command == commands.OpenCellInExternalEditor {
 		if table.ReadOnly {
-			table.SetError("Cannot modify data: Connection is in read-only mode", nil)
+			table.SetError(i18n.T("Cannot modify data: Connection is in read-only mode"), nil)
 			return nil
 		}
 		if table.Editor == nil && (runtime.GOOS == "linux" || runtime.GOOS == "darwin") {
@@ -1099,7 +1100,7 @@ func (table *ResultsTable) subscribeToEditorChanges() {
 			if table.ReadOnly {
 				if err := drivers.ValidateQueryForReadOnly(query); err != nil {
 					App.QueueUpdateDraw(func() {
-						table.SetError("Cannot execute mutation query: Connection is in read-only mode", nil)
+						table.SetError(i18n.T("Cannot execute mutation query: Connection is in read-only mode"), nil)
 						table.SetLoading(false)
 					})
 					continue
@@ -1129,7 +1130,7 @@ func (table *ResultsTable) subscribeToEditorChanges() {
 				table.Pagination.SetOffset(0)
 				table.Pagination.ClearCount()
 				table.Pagination.SetPageInfo(0, true)
-				table.SetQueryStatus("Running query… [Esc cancel]")
+				table.SetQueryStatus(i18n.T("Running query… [Esc cancel]"))
 				run = table.beginEditorQuery(generation)
 			})
 
@@ -1276,9 +1277,9 @@ func (table *ResultsTable) CancelActiveQuery() bool {
 	table.SetLoading(false)
 	count := table.editorQueryRowCount()
 	if count == 0 {
-		table.SetQueryStatus("Query canceled")
+		table.SetQueryStatus(i18n.T("Query canceled"))
 	} else {
-		table.SetQueryStatus(fmt.Sprintf("%d rows — partial result: query canceled", count))
+		table.SetQueryStatus(i18n.Tf("%d rows — partial result: query canceled", count))
 	}
 	return true
 }
@@ -1482,9 +1483,9 @@ func (table *ResultsTable) runEditorStreamQuery(ctx context.Context, run *editor
 			table.Pagination.SetPageInfo(rowCount, true)
 			table.SetLoading(false)
 			if rowCount == 0 {
-				table.SetQueryStatus("Query canceled")
+				table.SetQueryStatus(i18n.T("Query canceled"))
 			} else {
-				table.SetQueryStatus(fmt.Sprintf("%d rows — partial result: query canceled", rowCount))
+				table.SetQueryStatus(i18n.Tf("%d rows — partial result: query canceled", rowCount))
 			}
 			if rowCount > 0 || len(result.Columns) > 0 {
 				table.showEditorQueryResults()
@@ -1495,12 +1496,12 @@ func (table *ResultsTable) runEditorStreamQuery(ctx context.Context, run *editor
 		if err != nil {
 			table.SetLoading(false)
 			if rowCount == 0 {
-				table.SetQueryStatus(fmt.Sprintf("Query failed: %s", err.Error()))
+				table.SetQueryStatus(i18n.Tf("Query failed: %s", err.Error()))
 				table.SetError(err.Error(), nil)
 				return
 			}
 			table.Pagination.SetPageInfo(rowCount, true)
-			table.SetQueryStatus(fmt.Sprintf("%d rows — partial result: %s", rowCount, err.Error()))
+			table.SetQueryStatus(i18n.Tf("%d rows — partial result: %s", rowCount, err.Error()))
 			table.showEditorQueryResults()
 			return
 		}
@@ -1508,7 +1509,7 @@ func (table *ResultsTable) runEditorStreamQuery(ctx context.Context, run *editor
 		table.Pagination.SetLimit(rowCount)
 		if result.Truncated {
 			table.Pagination.SetPageInfo(rowCount, true)
-			table.SetQueryStatus(fmt.Sprintf("%d rows shown — result truncated (maximum %d)", rowCount, table.maxInteractiveQueryRows()))
+			table.SetQueryStatus(i18n.Tf("%d rows shown — result truncated (maximum %d)", rowCount, table.maxInteractiveQueryRows()))
 		} else {
 			table.Pagination.SetPageInfo(rowCount, false)
 			table.SetQueryStatus("")
@@ -1850,7 +1851,7 @@ func (table *ResultsTable) updateCSVExportProgress(run *csvExportRun, rows int) 
 		if !table.isCurrentCSVExport(run) || table.Pagination == nil {
 			return
 		}
-		table.Pagination.SetResultStatus(fmt.Sprintf("Exporting… %d rows written", run.rows()))
+		table.Pagination.SetResultStatus(i18n.Tf("Exporting… %d rows written", run.rows()))
 	})
 }
 
@@ -1881,7 +1882,7 @@ func (table *ResultsTable) finishCSVExport(run *csvExportRun, exportErr error) b
 
 	if canceled {
 		if table.Pagination != nil {
-			table.Pagination.SetResultStatus(fmt.Sprintf("Export canceled after %d rows written", rows))
+			table.Pagination.SetResultStatus(i18n.Tf("Export canceled after %d rows written", rows))
 		}
 		return true
 	}
@@ -1889,7 +1890,7 @@ func (table *ResultsTable) finishCSVExport(run *csvExportRun, exportErr error) b
 		if table.Pagination != nil {
 			table.Pagination.ClearResultStatus()
 		}
-		table.SetError("Failed to export CSV: "+exportErr.Error(), nil)
+		table.SetError(i18n.T("Failed to export CSV: ")+exportErr.Error(), nil)
 		return true
 	}
 
@@ -2940,7 +2941,7 @@ func (table *ResultsTable) handleReverseForeignKeyJump(selectedRowIndex int) {
 				}
 				table.applyMetadataResultForIdentity(identity, database, name, MetadataReferencingTables, status, value, err)
 				if err != nil {
-					table.SetError("Failed to load referencing tables: "+err.Error(), nil)
+					table.SetError(i18n.T("Failed to load referencing tables: ")+err.Error(), nil)
 					return
 				}
 				// Use the current row, not an index captured before a refresh.
@@ -2956,7 +2957,7 @@ func (table *ResultsTable) handleReverseForeignKeyJump(selectedRowIndex int) {
 		return
 	}
 	if len(entries) == 0 {
-		table.SetError("No table references this table", nil)
+		table.SetError(i18n.T("No table references this table"), nil)
 		return
 	}
 
@@ -2979,7 +2980,7 @@ func (table *ResultsTable) handleReverseForeignKeyJump(selectedRowIndex int) {
 	}
 
 	if len(navigableEntries) == 0 {
-		table.SetError("The selected row has no key value that referencing tables can be filtered by", nil)
+		table.SetError(i18n.T("The selected row has no key value that referencing tables can be filtered by"), nil)
 		return
 	}
 
@@ -3450,18 +3451,18 @@ func (table *ResultsTable) canExportAllQueryResults() bool {
 func (table *ResultsTable) queryExportAllUnavailableReason() string {
 	query := table.lastEditorQuery()
 	if query == "" || !table.state.lastEditorQueryReplaySafe || !isReplaySafeQuery(query) {
-		return "query is not classified as replay-safe"
+		return i18n.T("query is not classified as replay-safe")
 	}
 	if !table.state.editorResultAvailable && len(table.state.records) == 0 {
-		return "no query result has been shown"
+		return i18n.T("no query result has been shown")
 	}
 	if table.DBDriver == nil {
-		return "no streaming database driver is available"
+		return i18n.T("no streaming database driver is available")
 	}
 	if _, ok := table.DBDriver.(drivers.QueryStreamer); !ok {
-		return "the database driver does not support streaming"
+		return i18n.T("the database driver does not support streaming")
 	}
-	return "Export All is unavailable"
+	return i18n.T("Export All is unavailable")
 }
 
 func (table *ResultsTable) lastEditorQuery() string {
@@ -3606,7 +3607,7 @@ func ExportAllQueryResults(
 	}
 	streamer, ok := driver.(drivers.QueryStreamer)
 	if !ok {
-		return 0, errors.New("driver does not support streaming Export All Results")
+		return 0, errors.New(i18n.T("driver does not support streaming Export All Results"))
 	}
 	if ctx == nil {
 		ctx = context.Background()
@@ -3690,8 +3691,8 @@ func (table *ResultsTable) exportAllQueryResults(
 
 func (table *ResultsTable) showExportSuccessModal(filePath string, rowCount int) {
 	modal := tview.NewModal()
-	modal.SetText(fmt.Sprintf("Successfully exported %d rows to:\n%s", rowCount, filePath))
-	modal.AddButtons([]string{"OK"})
+	modal.SetText(i18n.Tf("Successfully exported %d rows to:\n%s", rowCount, filePath))
+	modal.AddButtons([]string{i18n.T("OK")})
 	modal.SetBackgroundColor(app.Styles.PrimitiveBackgroundColor)
 	modal.SetBorderStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor))
 	modal.SetTextColor(app.Styles.PrimaryTextColor)

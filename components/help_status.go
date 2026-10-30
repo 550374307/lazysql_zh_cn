@@ -4,6 +4,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/keymap"
 )
 
@@ -24,7 +25,7 @@ func (status *HelpStatus) UpdateText(binds []keymap.Bind) {
 
 	for i, key := range binds {
 
-		newtext += key.Cmd.String()
+		newtext += i18n.T("cmd." + key.Cmd.String())
 
 		newtext += ": "
 

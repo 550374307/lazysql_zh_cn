@@ -9,6 +9,7 @@ import (
 
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/drivers"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 // referencingTableEntry describes a single foreign key pointing at the table
@@ -130,14 +131,14 @@ func NewReferencingTablesList(entries []referencingTableEntry, useSchemas bool, 
 		Background(app.Styles.SecondaryTextColor).
 		Foreground(tview.Styles.ContrastSecondaryTextColor))
 
-	rtl.Filter.SetLabel("Search references: ")
+	rtl.Filter.SetLabel(i18n.T("Search references: "))
 	rtl.Filter.SetFieldBackgroundColor(app.Styles.PrimitiveBackgroundColor)
 	rtl.Filter.SetFieldTextColor(app.Styles.PrimaryTextColor)
 	rtl.Filter.SetLabelColor(app.Styles.SecondaryTextColor)
 	rtl.Filter.SetChangedFunc(rtl.fillTable)
 
 	rtl.hint.
-		SetText("/ search    ↑/↓ · j/k · Ctrl+n/p move    Enter open    Esc/q close").
+		SetText(i18n.T("/ search    ↑/↓ · j/k · Ctrl+n/p move    Enter open    Esc/q close")).
 		SetTextAlign(tview.AlignCenter).
 		SetTextColor(app.Styles.TertiaryTextColor)
 
@@ -207,11 +208,11 @@ func (rtl *ReferencingTablesList) fillTable(filter string) {
 	rtl.Table.Clear()
 	rtl.filteredIndices = rtl.filteredIndices[:0]
 
-	rtl.Table.SetCell(0, 0, tview.NewTableCell("TABLE").
+	rtl.Table.SetCell(0, 0, tview.NewTableCell(i18n.T("TABLE")).
 		SetTextColor(app.Styles.SecondaryTextColor).
 		SetSelectable(false).
 		SetExpansion(1))
-	rtl.Table.SetCell(0, 1, tview.NewTableCell("RELATIONSHIP").
+	rtl.Table.SetCell(0, 1, tview.NewTableCell(i18n.T("RELATIONSHIP")).
 		SetTextColor(app.Styles.SecondaryTextColor).
 		SetSelectable(false).
 		SetExpansion(1))
@@ -238,16 +239,16 @@ func (rtl *ReferencingTablesList) fillTable(filter string) {
 	}
 
 	if len(rtl.filteredIndices) == 0 {
-		rtl.Table.SetCell(1, 0, tview.NewTableCell("No matching referencing tables").
+		rtl.Table.SetCell(1, 0, tview.NewTableCell(i18n.T("No matching referencing tables")).
 			SetTextColor(app.Styles.TertiaryTextColor).
 			SetSelectable(false).
 			SetExpansion(1))
 		rtl.Table.SetCell(1, 1, tview.NewTableCell("").SetSelectable(false))
 	}
 
-	title := fmt.Sprintf(" Referencing tables (%d) ", len(rtl.filteredIndices))
+	title := i18n.Tf(" Referencing tables (%d) ", len(rtl.filteredIndices))
 	if query != "" {
-		title = fmt.Sprintf(" Referencing tables (%d/%d) ", len(rtl.filteredIndices), len(rtl.entries))
+		title = i18n.Tf(" Referencing tables (%d/%d) ", len(rtl.filteredIndices), len(rtl.entries))
 	}
 	rtl.Table.SetTitle(title)
 	rtl.Table.Select(1, 0)

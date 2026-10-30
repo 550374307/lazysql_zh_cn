@@ -15,6 +15,7 @@ import (
 	"github.com/jorgerojas26/lazysql/drivers"
 	"github.com/jorgerojas26/lazysql/helpers"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/telemetry"
 	"github.com/jorgerojas26/lazysql/models"
 )
@@ -31,35 +32,35 @@ func NewConnectionSelection(connectionForm *ConnectionForm, connectionPages *mod
 
 	buttonsWrapper := tview.NewFlex().SetDirection(tview.FlexRowCSS)
 
-	newButton := tview.NewButton(fmt.Sprintf("[%s]N[-]ew", app.Styles.SecondaryTextColor))
+	newButton := tview.NewButton(i18n.Tf("[%s]N[-]ew", app.Styles.SecondaryTextColor))
 	newButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	newButton.SetBorder(true)
 
 	buttonsWrapper.AddItem(newButton, 0, 1, false)
 	buttonsWrapper.AddItem(nil, 1, 0, false)
 
-	connectButton := tview.NewButton(fmt.Sprintf("[%s]C[-]onnect", app.Styles.SecondaryTextColor))
+	connectButton := tview.NewButton(i18n.Tf("[%s]C[-]onnect", app.Styles.SecondaryTextColor))
 	connectButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	connectButton.SetBorder(true)
 
 	buttonsWrapper.AddItem(connectButton, 0, 1, false)
 	buttonsWrapper.AddItem(nil, 1, 0, false)
 
-	editButton := tview.NewButton(fmt.Sprintf("[%s]E[-]dit", app.Styles.SecondaryTextColor))
+	editButton := tview.NewButton(i18n.Tf("[%s]E[-]dit", app.Styles.SecondaryTextColor))
 	editButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	editButton.SetBorder(true)
 
 	buttonsWrapper.AddItem(editButton, 0, 1, false)
 	buttonsWrapper.AddItem(nil, 1, 0, false)
 
-	deleteButton := tview.NewButton(fmt.Sprintf("[%s]D[-]elete", app.Styles.SecondaryTextColor))
+	deleteButton := tview.NewButton(i18n.Tf("[%s]D[-]elete", app.Styles.SecondaryTextColor))
 	deleteButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	deleteButton.SetBorder(true)
 
 	buttonsWrapper.AddItem(deleteButton, 0, 1, false)
 	buttonsWrapper.AddItem(nil, 1, 0, false)
 
-	quitButton := tview.NewButton(fmt.Sprintf("[%s]Q[-]uit", app.Styles.SecondaryTextColor))
+	quitButton := tview.NewButton(i18n.Tf("[%s]Q[-]uit", app.Styles.SecondaryTextColor))
 	quitButton.SetStyle(tcell.StyleDefault.Background(app.Styles.PrimitiveBackgroundColor).Foreground(app.Styles.PrimaryTextColor))
 	quitButton.SetBorder(true)
 
@@ -104,7 +105,7 @@ func NewConnectionSelection(connectionForm *ConnectionForm, connectionPages *mod
 					mainPages.RemovePage(pageNameConfirmation)
 					confirmationModal = nil
 
-					if buttonLabel == "Yes" {
+					if buttonLabel == i18n.T("Yes") {
 						newConnections := append(connections[:row], connections[row+1:]...)
 
 						err := app.App.SaveConnections(newConnections)
@@ -126,10 +127,10 @@ func NewConnectionSelection(connectionForm *ConnectionForm, connectionPages *mod
 		switch command {
 		case commands.NewConnection:
 			connectionForm.SetAction(actionNewConnection)
-			connectionForm.GetFormItemByLabel("Name").(*tview.InputField).SetText("")
-			connectionForm.GetFormItemByLabel("URL").(*tview.InputField).SetText("")
-			connectionForm.GetFormItemByLabel("Read-Only").(*tview.Checkbox).SetChecked(false)
-			connectionForm.GetFormItemByLabel("Show all databases in this instance").(*tview.Checkbox).SetChecked(false)
+			connectionForm.GetFormItemByLabel(i18n.T("Name")).(*tview.InputField).SetText("")
+			connectionForm.GetFormItemByLabel(i18n.T("URL")).(*tview.InputField).SetText("")
+			connectionForm.GetFormItemByLabel(i18n.T("Read-Only")).(*tview.Checkbox).SetChecked(false)
+			connectionForm.GetFormItemByLabel(i18n.T("Show all databases in this instance")).(*tview.Checkbox).SetChecked(false)
 			connectionForm.StatusText.SetText("")
 			connectionPages.SwitchToPage(pageNameConnectionForm)
 		case commands.Quit:
@@ -174,7 +175,7 @@ func (cs *ConnectionSelection) Connect(connection models.Connection) *tview.Appl
 		}
 
 		for i, command := range connection.Commands {
-			message := fmt.Sprintf("Running command %d/%d...", i+1, len(connection.Commands))
+			message := i18n.Tf("Running command %d/%d...", i+1, len(connection.Commands))
 			cs.StatusText.SetText(message).SetTextColor(app.Styles.TertiaryTextColor)
 			App.Draw()
 
@@ -208,11 +209,11 @@ func (cs *ConnectionSelection) Connect(connection models.Connection) *tview.Appl
 
 				if portInt, err := strconv.Atoi(interpolatedPort); err != nil || portInt < 0 || portInt >= 1<<16 {
 					usage.ConnectionFailed(telemetry.InvalidConnection)
-					cs.StatusText.SetText("bad port: " + interpolatedPort).SetTextStyle(tcell.StyleDefault.Foreground(app.Styles.ErrorColor).Background(app.Styles.PrimitiveBackgroundColor))
+					cs.StatusText.SetText(i18n.Tf("bad port: %s", interpolatedPort)).SetTextStyle(tcell.StyleDefault.Foreground(app.Styles.ErrorColor).Background(app.Styles.PrimitiveBackgroundColor))
 					return App.Draw()
 				}
 
-				message := fmt.Sprintf("Waiting for port %s...", interpolatedPort)
+				message := i18n.Tf("Waiting for port %s...", interpolatedPort)
 				cs.StatusText.SetText(message).SetTextColor(app.Styles.TertiaryTextColor)
 				App.Draw()
 
@@ -233,7 +234,7 @@ func (cs *ConnectionSelection) Connect(connection models.Connection) *tview.Appl
 		}
 	}
 
-	cs.StatusText.SetText("Connecting...").SetTextColor(app.Styles.TertiaryTextColor)
+	cs.StatusText.SetText(i18n.T("Connecting...")).SetTextColor(app.Styles.TertiaryTextColor)
 	App.Draw()
 
 	poolConfig, err := app.App.Config().EffectiveConnectionPool(connection)
@@ -257,7 +258,7 @@ func (cs *ConnectionSelection) Connect(connection models.Connection) *tview.Appl
 		newDBDriver = &drivers.ClickHouse{PoolConfig: poolConfig}
 	default:
 		usage.ConnectionFailed(telemetry.Driver)
-		errorMsg := fmt.Sprintf("Unsupported database provider: '%s'. Valid providers are: mysql, postgres, sqlite3, sqlserver, clickhouse", connection.Provider)
+		errorMsg := i18n.Tf("Unsupported database provider: '%s'. Valid providers are: mysql, postgres, sqlite3, sqlserver, clickhouse", connection.Provider)
 		cs.StatusText.SetText(errorMsg).SetTextStyle(tcell.StyleDefault.Foreground(app.Styles.ErrorColor).Background(app.Styles.PrimitiveBackgroundColor))
 		return App.Draw()
 	}

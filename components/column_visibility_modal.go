@@ -9,6 +9,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 type ColumnVisibilityModal struct {
@@ -30,7 +31,7 @@ func NewColumnVisibilityModal(columns, hidden []string, onApply func([]string) e
 		Flex:    tview.NewFlex(),
 		panel:   tview.NewFlex().SetDirection(tview.FlexRow),
 		list:    tview.NewList().ShowSecondaryText(false),
-		search:  tview.NewInputField().SetLabel(" / Find: "),
+		search:  tview.NewInputField().SetLabel(i18n.T(" / Find: ")),
 		status:  tview.NewTextView().SetTextAlign(tview.AlignCenter),
 		columns: slices.Clone(columns),
 		hidden:  make(map[string]bool),
@@ -92,9 +93,9 @@ func NewColumnVisibilityModal(columns, hidden []string, onApply func([]string) e
 		return event
 	})
 
-	all := tview.NewButton("All (A)").SetSelectedFunc(picker.showAll)
-	apply := tview.NewButton("Apply ↵").SetSelectedFunc(picker.apply)
-	cancel := tview.NewButton("Cancel Esc").SetSelectedFunc(onCancel)
+	all := tview.NewButton(i18n.T("All (A)")).SetSelectedFunc(picker.showAll)
+	apply := tview.NewButton(i18n.T("Apply ↵")).SetSelectedFunc(picker.apply)
+	cancel := tview.NewButton(i18n.T("Cancel Esc")).SetSelectedFunc(onCancel)
 	buttons := tview.NewFlex().
 		AddItem(nil, 0, 1, false).
 		AddItem(all, 9, 0, false).
@@ -165,7 +166,7 @@ func (picker *ColumnVisibilityModal) fillList() {
 		picker.list.AddItem(picker.label(name), "", 0, nil)
 	}
 	if len(picker.filtered) == 0 {
-		picker.list.AddItem("No matching columns", "", 0, nil)
+		picker.list.AddItem(i18n.T("No matching columns"), "", 0, nil)
 	} else {
 		picker.list.SetCurrentItem(min(current, len(picker.filtered)-1))
 	}
@@ -191,12 +192,12 @@ func (picker *ColumnVisibilityModal) visibleCount() int {
 }
 
 func (picker *ColumnVisibilityModal) updateStatus() {
-	title := fmt.Sprintf(" Columns · %d/%d visible", picker.visibleCount(), len(picker.columns))
+	title := i18n.Tf(" Columns · %d/%d visible", picker.visibleCount(), len(picker.columns))
 	if picker.tableName != "" {
 		title += " · " + picker.tableName
 	}
 	picker.panel.SetTitle(tview.Escape(title + " "))
-	picker.status.SetTextColor(app.Styles.TertiaryTextColor).SetText("Space toggle · / find")
+	picker.status.SetTextColor(app.Styles.TertiaryTextColor).SetText(i18n.T("Space toggle · / find"))
 }
 
 func (picker *ColumnVisibilityModal) toggle(index int) {
@@ -205,7 +206,7 @@ func (picker *ColumnVisibilityModal) toggle(index int) {
 	}
 	name := picker.filtered[index]
 	if !picker.hidden[name] && picker.visibleCount() <= 1 {
-		picker.status.SetTextColor(app.Styles.ErrorColor).SetText("Keep at least one column visible")
+		picker.status.SetTextColor(app.Styles.ErrorColor).SetText(i18n.T("Keep at least one column visible"))
 		return
 	}
 	if picker.hidden[name] {
@@ -236,6 +237,6 @@ func (picker *ColumnVisibilityModal) apply() {
 		}
 	}
 	if err := picker.onApply(hidden); err != nil {
-		picker.status.SetTextColor(app.Styles.ErrorColor).SetText("Could not save: " + err.Error())
+		picker.status.SetTextColor(app.Styles.ErrorColor).SetText(i18n.T("Could not save: ") + err.Error())
 	}
 }

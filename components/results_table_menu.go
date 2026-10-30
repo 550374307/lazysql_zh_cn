@@ -6,6 +6,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 type ResultsTableMenuState struct {
@@ -44,7 +45,7 @@ func NewResultsTableMenu() *ResultsTableMenu {
 			separator = ""
 		}
 
-		text := fmt.Sprintf("%s [%d] %s", item, i+1, separator)
+		text := fmt.Sprintf("%s [%d] %s", i18n.T(item), i+1, separator)
 		textview := tview.NewTextView().SetText(text)
 
 		if i == 0 {

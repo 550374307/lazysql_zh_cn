@@ -8,6 +8,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 // ThemePicker previews built-in themes while preserving the current UI state.
@@ -32,13 +33,13 @@ func NewThemePicker(onClose func()) *ThemePicker {
 		previousFocus:  app.App.GetFocus(),
 	}
 
-	picker.list.SetBorder(true).SetTitle(" Themes ")
+	picker.list.SetBorder(true).SetTitle(i18n.T(" Themes "))
 	picker.list.SetHighlightFullLine(true)
 	picker.list.SetSelectedStyle(tcell.StyleDefault.
 		Background(app.Styles.SecondaryTextColor).
 		Foreground(app.Styles.ContrastSecondaryTextColor))
 	picker.list.SetInputCapture(themePickerNavigationEvent)
-	picker.preview.SetBorder(true).SetTitle(" Live preview ")
+	picker.preview.SetBorder(true).SetTitle(i18n.T(" Live preview "))
 	picker.preview.SetWrap(true)
 	picker.status.SetTextAlign(tview.AlignCenter)
 	picker.status.SetDynamicColors(true)
@@ -65,7 +66,7 @@ func NewThemePicker(onClose func()) *ThemePicker {
 			picker.status.SetText(fmt.Sprintf("[%s]%s[-]", app.Styles.ErrorColor, err))
 			return
 		}
-		picker.status.SetText("j/k or Ctrl+N/P to preview • Enter to save • q/Esc to cancel")
+		picker.status.SetText(i18n.T("j/k or Ctrl+N/P to preview • Enter to save • q/Esc to cancel"))
 		picker.updatePreview(app.Styles, name)
 	})
 
@@ -88,7 +89,7 @@ func NewThemePicker(onClose func()) *ThemePicker {
 			return
 		}
 		if err := app.App.SaveThemePreset(name); err != nil {
-			picker.status.SetText(fmt.Sprintf("[%s]Could not save theme: %s[-]", app.Styles.ErrorColor, err))
+			picker.status.SetText(i18n.Tf("[%s]Could not save theme: %s[-]", app.Styles.ErrorColor, err))
 			return
 		}
 		closePicker(false)
@@ -103,7 +104,7 @@ func NewThemePicker(onClose func()) *ThemePicker {
 	panel := tview.NewFlex().SetDirection(tview.FlexRow).
 		AddItem(content, 0, 1, true).
 		AddItem(picker.status, 1, 0, false)
-	panel.SetBorder(true).SetTitle(" Theme picker ")
+	panel.SetBorder(true).SetTitle(i18n.T(" Theme picker "))
 
 	picker.AddItem(nil, 0, 1, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
@@ -112,7 +113,7 @@ func NewThemePicker(onClose func()) *ThemePicker {
 			AddItem(nil, 0, 1, false), 24, 0, true).
 		AddItem(nil, 0, 1, false)
 
-	picker.status.SetText("j/k or Ctrl+N/P to preview • Enter to save • q/Esc to cancel")
+	picker.status.SetText(i18n.T("j/k or Ctrl+N/P to preview • Enter to save • q/Esc to cancel"))
 	app.App.BeginThemePreview()
 	return picker
 }

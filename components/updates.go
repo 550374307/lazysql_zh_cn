@@ -11,6 +11,7 @@ import (
 
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/commands"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/updater"
 )
 
@@ -50,10 +51,10 @@ func WithUpdates(pages *tview.Pages, version string) *tview.Pages {
 }
 
 func (u *updateUI) status(message string) {
-	key := "Updates"
+	key := i18n.T("Updates")
 	for _, bind := range app.Keymaps.Global {
 		if bind.Cmd == commands.CheckForUpdates {
-			key = bind.Key.String() + ": updates"
+			key = bind.Key.String() + i18n.T(": updates")
 			break
 		}
 	}
@@ -139,7 +140,7 @@ func (u *updateUI) dialog(text string, buttons []string, done func(string)) {
 	modal := tview.NewModal().SetText(text).AddButtons(buttons)
 	modal.SetBackgroundColor(app.Styles.PrimitiveBackgroundColor).SetTextColor(app.Styles.PrimaryTextColor)
 	modal.SetDoneFunc(func(_ int, label string) {
-		if label == "" || label == "Close" || label == "Later" {
+		if label == "" || label == i18n.T("Close") || label == i18n.T("Later") {
 			u.close()
 			return
 		}
@@ -156,13 +157,13 @@ func (u *updateUI) open() {
 		return
 	}
 	if u.installed {
-		u.dialog("Upgrade installed. Restart LazySQL when ready to use the new version. Your current session has not been interrupted.", []string{"Close"}, nil)
+		u.dialog(i18n.T("Upgrade installed. Restart LazySQL when ready to use the new version. Your current session has not been interrupted."), []string{i18n.T("Close")}, nil)
 	} else if u.busy {
-		u.dialog("An update operation is in progress. You can close this dialog and keep working.", []string{"Close"}, nil)
+		u.dialog(i18n.T("An update operation is in progress. You can close this dialog and keep working."), []string{i18n.T("Close")}, nil)
 	} else if u.release != nil {
 		u.offer()
 	} else {
-		u.dialog("Checking for updates…", []string{"Close"}, nil)
+		u.dialog(i18n.T("Checking for updates…"), []string{i18n.T("Close")}, nil)
 		u.check(true)
 	}
 }
@@ -182,7 +183,7 @@ func (u *updateUI) check(manual bool) {
 			u.busy = false
 			u.release = release
 			if release != nil {
-				u.status("LazySQL " + release.Tag + " available")
+				u.status(i18n.Tf("LazySQL %s available", release.Tag))
 				if u.modal == nil {
 					u.showUpgradeToast()
 				}
@@ -191,9 +192,9 @@ func (u *updateUI) check(manual bool) {
 				return
 			}
 			if err != nil {
-				u.dialog("Could not check for updates: "+tview.Escape(err.Error()), []string{"Close"}, nil)
+				u.dialog(i18n.T("Could not check for updates: ")+tview.Escape(err.Error()), []string{i18n.T("Close")}, nil)
 			} else if release == nil {
-				u.dialog("LazySQL "+u.current+" is up to date.", []string{"Close"}, nil)
+				u.dialog(i18n.Tf("LazySQL %s is up to date.", u.current), []string{i18n.T("Close")}, nil)
 			} else {
 				u.offer()
 			}
@@ -204,16 +205,16 @@ func (u *updateUI) check(manual bool) {
 func (u *updateUI) offer() {
 	target, err := updater.Executable()
 	if err != nil {
-		u.dialog("Cannot locate the running executable: "+tview.Escape(err.Error()), []string{"Close"}, nil)
+		u.dialog(i18n.T("Cannot locate the running executable: ")+tview.Escape(err.Error()), []string{i18n.T("Close")}, nil)
 		return
 	}
-	text := fmt.Sprintf("LazySQL %s is available (running %s).\n\nRelease notes: https://github.com/jorgerojas26/lazysql/releases/tag/%s", u.release.Tag, u.current, u.release.Tag)
+	text := i18n.Tf("LazySQL %s is available (running %s).\n\nRelease notes: https://github.com/jorgerojas26/lazysql/releases/tag/%s", u.release.Tag, u.current, u.release.Tag)
 	if guidance := updater.InstallGuidance(target, runtime.GOOS); guidance != "" {
-		u.dialog(text+"\n\n"+guidance, []string{"Close"}, nil)
+		u.dialog(text+"\n\n"+guidance, []string{i18n.T("Close")}, nil)
 		return
 	}
-	u.dialog(text+"\n\nUpgrade will download and verify the official release, then replace:\n"+tview.Escape(target)+"\n\nRestart manually when ready. Upgrade now?", []string{"Later", "Upgrade"}, func(label string) {
-		if label == "Upgrade" {
+	u.dialog(text+"\n\n"+i18n.T("Upgrade will download and verify the official release, then replace:\n")+tview.Escape(target)+i18n.T("\n\nRestart manually when ready. Upgrade now?"), []string{i18n.T("Later"), i18n.T("Upgrade")}, func(label string) {
+		if label == i18n.T("Upgrade") {
 			u.install(target)
 		}
 	})
@@ -224,8 +225,8 @@ func (u *updateUI) offer() {
 func (u *updateUI) install(target string) {
 	u.busy = true
 	release := *u.release
-	u.status("Downloading and verifying " + release.Tag + "…")
-	u.dialog("Installing update… You can close this dialog and continue working.", []string{"Close"}, nil)
+	u.status(i18n.Tf("Downloading and verifying %s…", release.Tag))
+	u.dialog(i18n.T("Installing update… You can close this dialog and continue working."), []string{i18n.T("Close")}, nil)
 	ctx := app.App.Context()
 	done := app.App.Register()
 	go func() {
@@ -238,14 +239,14 @@ func (u *updateUI) install(target string) {
 		app.App.QueueUpdateDraw(func() {
 			u.busy = false
 			if err != nil {
-				u.status("Upgrade failed; open updates to retry")
+				u.status(i18n.T("Upgrade failed; open updates to retry"))
 				if u.modal != nil {
-					u.dialog("Upgrade failed: "+tview.Escape(err.Error()), []string{"Close"}, nil)
+					u.dialog(i18n.T("Upgrade failed: ")+tview.Escape(err.Error()), []string{i18n.T("Close")}, nil)
 				}
 				return
 			}
 			u.installed = true
-			u.status("Installed " + release.Tag + "; restart LazySQL when ready")
+			u.status(i18n.Tf("Installed %s; restart LazySQL when ready", release.Tag))
 			if u.modal != nil {
 				u.open()
 			}

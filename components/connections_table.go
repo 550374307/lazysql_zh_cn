@@ -7,6 +7,7 @@ import (
 	"github.com/rivo/tview"
 
 	"github.com/jorgerojas26/lazysql/app"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/models"
 )
 
@@ -48,7 +49,7 @@ func (ct *ConnectionsTable) AddConnection(connection models.Connection) {
 	displayName := connection.Name
 
 	if connection.ReadOnly {
-		displayName = fmt.Sprintf("[%s]READ[-] ", app.Styles.ReadOnlyColor) + connection.Name
+		displayName = fmt.Sprintf("[%s]%s[-] ", app.Styles.ReadOnlyColor, i18n.T("READ")) + connection.Name
 	}
 	ct.SetCellSimple(rowCount, 0, displayName)
 	ct.connections = append(ct.connections, connection)

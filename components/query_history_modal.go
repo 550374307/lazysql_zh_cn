@@ -6,6 +6,7 @@ import (
 
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/commands"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 )
 
 type QueryHistoryModal struct {
@@ -37,8 +38,8 @@ func NewQueryHistoryModal(connectionIdentifier string, onSelect func(query strin
 	})
 
 	qhm.tabbedPane = NewTabbedPane()
-	qhm.tabbedPane.AppendTab("Saved Queries", qhm.savedQueriesComponent, savedQueryTabReference)
-	qhm.tabbedPane.AppendTab("History", qhm.queryHistoryComponent, queryHistoryTabReference)
+	qhm.tabbedPane.AppendTab(i18n.T("Saved Queries"), qhm.savedQueriesComponent, savedQueryTabReference)
+	qhm.tabbedPane.AppendTab(i18n.T("History"), qhm.queryHistoryComponent, queryHistoryTabReference)
 
 	qhm.tabbedPane.SetCurrentTab(qhm.tabbedPane.GetTabByReference(savedQueryTabReference))
 

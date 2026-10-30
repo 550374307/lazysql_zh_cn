@@ -178,6 +178,8 @@ DisableSidebar = false
 SidebarOverlay = false
 JSONViewerWordWrap = false
 EnterOpensJSONViewer = false
+language = "zh"
+language_file = ""
 schema_bulk_load_threshold = 200
 exact_count_threshold = 50000
 exact_count_timeout_ms = 200
@@ -220,11 +222,41 @@ The `[application]` section is used to define some app settings. Not all setting
 | schema_bulk_load_threshold | 200 | Maximum visible tables whose columns are eagerly loaded in bulk (0 = always lazy) |
 | max_open_connections | 8 | Maximum open connections for MySQL, PostgreSQL, and MSSQL (0 = use default 8) |
 | max_idle_connections | 8 | Maximum idle connections for MySQL, PostgreSQL, and MSSQL (0 = use default 8) |
+| language | zh | UI language. Built-in codes: `zh` (Simplified Chinese, default) and `en` (English). Any other code uses English as the base and is intended for use with `language_file` |
+| language_file | "" | Path to a custom language file (JSON mapping English UI strings to their translations). Entries override the built-in language pack, enabling arbitrary languages or terminology without recompiling |
 
 `schema_bulk_load_threshold` limits eager autocomplete column loading to small
 visible schemas. `0` keeps all columns lazy; larger schemas still expose table
 names immediately and fetch a requested table on demand. Cached or in-flight
 columns are reused regardless of the threshold.
+
+### Internationalization (i18n)
+
+LazySQL ships with built-in Simplified Chinese (`zh`, the default) and English
+(`en`) UI language packs. Select a language with the `language` setting:
+
+```toml
+[application]
+language = "zh"   # or "en"
+```
+
+To use your own language or terminology without recompiling, point
+`language_file` at a JSON file that maps English UI strings to your
+translations. Entries in the custom file override the built-in pack; keys that
+are absent from the custom file keep their built-in translation:
+
+```json
+{
+  "Yes": "行",
+  "Save": "存储",
+  "Query failed: %s": "查询出错了：%s"
+}
+```
+
+Custom language files are loaded after the built-in pack, so you only need to
+include the strings you want to change. Set `language` to a value other than
+`zh`/`en` (for example `"custom"`) to start from English and let the custom
+file provide the entire UI. The default language is `zh`.
 
 ### Upgrade notices and in-app upgrades
 

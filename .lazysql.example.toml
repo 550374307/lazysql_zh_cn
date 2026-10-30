@@ -10,6 +10,13 @@ exact_count_threshold = 50000
 exact_count_timeout_ms = 200
 max_open_connections = 4
 max_idle_connections = 4
+# UI language: "zh" (Simplified Chinese, default) or "en" (English).
+# Any other value uses English as a base and is intended to be combined with
+# language_file below.
+language = "zh"
+# Optional custom language file (JSON mapping English UI strings to their
+# translations). Entries override the built-in language pack. Example:
+#   language_file = "~/.config/lazysql/custom_zh.json"
 
 [[database]]
 Name = "Docker MySQL"

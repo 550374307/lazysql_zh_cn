@@ -9,6 +9,7 @@ import (
 	"github.com/jorgerojas26/lazysql/app"
 	"github.com/jorgerojas26/lazysql/commands"
 	"github.com/jorgerojas26/lazysql/helpers/logger"
+	"github.com/jorgerojas26/lazysql/internal/i18n"
 	"github.com/jorgerojas26/lazysql/internal/saved"
 	"github.com/jorgerojas26/lazysql/lib"
 	"github.com/jorgerojas26/lazysql/models"
@@ -44,7 +45,7 @@ func NewSavedQueriesComponent(connectionIdentifier string, onSelect func(query s
 	}
 
 	sqc.filterInput = tview.NewInputField().
-		SetLabel("Search: ").
+		SetLabel(i18n.T("Search: ")).
 		SetFieldWidth(30).SetFieldStyle(
 		tcell.StyleDefault.
 			Background(app.Styles.SecondaryTextColor).
@@ -59,7 +60,7 @@ func NewSavedQueriesComponent(connectionIdentifier string, onSelect func(query s
 
 	sqc.table.SetSelectedStyle(tcell.StyleDefault.Background(app.Styles.SecondaryTextColor).Foreground(tview.Styles.ContrastSecondaryTextColor))
 	sqc.table.SetBorderColor(app.Styles.PrimaryTextColor)
-	sqc.table.SetTitle(" Saved Queries ")
+	sqc.table.SetTitle(i18n.T(" Saved Queries "))
 
 	layout := tview.NewFlex().SetDirection(tview.FlexRow).
 		AddItem(sqc.filterInput, 2, 0, false).
@@ -123,9 +124,9 @@ func (sqc *SavedQueriesComponent) handleDelete() {
 		selectedQuery := sqc.displayedQueries[row-1]
 
 		confirmation := NewConfirmationModal("")
-		confirmation.SetText("Are you sure you want to delete this query?")
+		confirmation.SetText(i18n.T("Are you sure you want to delete this query?"))
 		confirmation.SetDoneFunc(func(_ int, buttonLabel string) {
-			if buttonLabel == "Yes" {
+			if buttonLabel == i18n.T("Yes") {
 				err := saved.DeleteSavedQuery(sqc.connectionIdentifier, selectedQuery.Name)
 				if err != nil {
 					// TODO: Show error
@@ -154,7 +155,7 @@ func (sqc *SavedQueriesComponent) populateTable(queries []models.SavedQuery) {
 	sqc.table.Clear()
 	sqc.displayedQueries = queries
 
-	headers := []string{"Name", "Query"}
+	headers := []string{i18n.T("Name"), i18n.T("Query")}
 	for c, header := range headers {
 		sqc.table.SetCell(0, c, tview.NewTableCell(header).
 			SetSelectable(false).
@@ -204,9 +205,9 @@ func (sqc *SavedQueriesComponent) Refresh() {
 func (sqc *SavedQueriesComponent) SetIsFiltering(filtering bool) {
 	sqc.state.isFiltering = filtering
 	if filtering {
-		sqc.table.SetTitle(" Saved Queries (Filtered) ")
+		sqc.table.SetTitle(i18n.T(" Saved Queries (Filtered) "))
 	} else {
-		sqc.table.SetTitle(" Saved Queries ")
+		sqc.table.SetTitle(i18n.T(" Saved Queries "))
 	}
 }
 
