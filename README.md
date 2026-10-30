@@ -202,6 +202,32 @@ max_idle_connections = 8
 
 `ReadOnly` 字段（可选，默认为 `false`）可以设为 `true` 以启用连接的只读模式。启用后，所有变更类查询（INSERT、UPDATE、DELETE、DROP 等）都会被阻止。
 
+### MySQL login-path 凭据（无需在配置中写明文密码）
+
+MySQL 的 `mysql_config_editor` 工具可以把连接凭据混淆加密后保存到 `~/.mylogin.cnf`（Windows 为 `%APPDATA%\MySQL\.mylogin.cnf`）。LazySQL 可以直接读取这个加密文件，因此 `.lazysql.toml` 里不再需要保存明文密码。
+
+1. 先在终端里生成一个 login-path（按提示输入密码，密码不会进入 shell 历史）：
+
+   ```bash
+   mysql_config_editor set --login-path=prod --host=127.0.0.1 --port=3306 --user=root --password
+   # 查看已保存的条目（会显示明文，仅用于确认）
+   mysql_config_editor print --all
+   ```
+
+2. 然后在配置里只引用名字，密码等凭据留空：
+
+   ```toml
+   [[database]]
+   Name = '生产库'
+   Provider = 'mysql'
+   LoginPath = 'prod'
+   DBName = 'app'
+   ```
+
+   加载连接时，`user` / `password` / `host` / `port` 中**留空**的字段会自动从 `prod` 条目补齐；**显式写出的字段优先**（与 `mysql` 客户端一致：命令行选项覆盖 `--login-path`）。只写 `Provider = 'mysql'` + `LoginPath` + `DBName` 时，LazySQL 会自动拼接出 `mysql://user:pass@host:3306/db` 形式的连接串。
+
+   该加密仅用于防止凭据被直接读取（与 MySQL 官方说明一致，并非强加密）；`~/.mylogin.cnf` 自身也应保持仅当前用户可读。
+
 数据库条目可以用 `max_open_connections` 和 `max_idle_connections` 覆盖连接池设置。省略的值继承应用设置；显式的 `0` 使用 LazySQL 默认值 `8`。无效组合（例如空闲连接数大于打开连接数）会被拒绝。SQLite 始终使用一条打开连接和一条空闲连接（`1/1`）以保持内存数据库行为，忽略通用连接池设置。
 
 `DBName` 字段（可选）控制打开连接时侧边栏树的填充方式：

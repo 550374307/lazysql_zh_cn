@@ -24,6 +24,19 @@ Provider = "mysql"
 DBName = "lazysql_test"
 URL = "mysql://lazysql:@@PASSWORD@@@127.0.0.1:3307/lazysql_test?parseTime=true"
 
+# MySQL login-path credentials (no plaintext password in this file).
+# Create the encrypted entry once with:
+#   mysql_config_editor set --login-path=docker-mysql --host=127.0.0.1 \
+#       --port=3307 --user=lazysql --password
+# Then reference only its name; empty user/password/host/port fields are
+# filled from ~/.mylogin.cnf (Windows: %APPDATA%\MySQL\.mylogin.cnf) at load.
+# Explicitly set fields always win.
+#[[database]]
+#Name = "Docker MySQL (login-path)"
+#Provider = "mysql"
+#LoginPath = "docker-mysql"
+#DBName = "lazysql_test"
+
 [[database]]
 Name = "Docker PostgreSQL"
 Provider = "postgres"

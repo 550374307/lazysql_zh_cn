@@ -195,6 +195,32 @@ max_idle_connections = 8
 
 The `ReadOnly` field (optional, defaults to `false`) can be set to `true` to enable read-only mode for a connection. When enabled, all mutation queries (INSERT, UPDATE, DELETE, DROP, etc.) will be blocked.
 
+### MySQL login-path credentials (no plaintext passwords in the config)
+
+MySQL's `mysql_config_editor` utility stores connection credentials in an obfuscated file at `~/.mylogin.cnf` (`%APPDATA%\MySQL\.mylogin.cnf` on Windows). LazySQL can read that encrypted file directly, so no plaintext password has to live in `.lazysql.toml`.
+
+1. Create a login path in your terminal (enter the password when prompted; it never appears in shell history):
+
+   ```bash
+   mysql_config_editor set --login-path=prod --host=127.0.0.1 --port=3306 --user=root --password
+   # inspect saved entries (prints plaintext; for confirmation only)
+   mysql_config_editor print --all
+   ```
+
+2. Reference only its name in the config, leaving credentials empty:
+
+   ```toml
+   [[database]]
+   Name = 'Production'
+   Provider = 'mysql'
+   LoginPath = 'prod'
+   DBName = 'app'
+   ```
+
+   When the connection is loaded, any of `user` / `password` / `host` / `port` left **empty** is filled from the `prod` entry; **explicitly set fields win** (matching the `mysql` client, where command-line options override `--login-path`). With just `Provider = 'mysql'` + `LoginPath` + `DBName`, LazySQL builds a `mysql://user:pass@host:3306/db` DSN automatically.
+
+   Note the obfuscation is meant to deter casual reading (as MySQL's own docs state), not to be strong encryption; keep `~/.mylogin.cnf` readable by your user only.
+
 Database entries may override the connection pool with `max_open_connections` and `max_idle_connections`. Omitted values inherit the application settings; an explicit `0` uses LazySQL's default of `8`. Invalid combinations (for example, idle connections greater than open connections) are rejected. SQLite always uses one open and one idle connection (`1/1`) to preserve in-memory database behavior, ignoring the general pool settings.
 
 The `DBName` field (optional) controls how the sidebar tree is populated when a connection is opened:
