@@ -98,3 +98,23 @@ func TestCommandAndGroupPrefixKeys(t *testing.T) {
 		t.Errorf(`T("keymap.group.table") = %q, want "表格"`, got)
 	}
 }
+
+// TestKeybindDescriptionKeys guards the help modal / status bar strings:
+// help_modal translates bind.Description at render time, so those keys are
+// not visible to static extraction and must be covered explicitly.
+func TestKeybindDescriptionKeys(t *testing.T) {
+	SetLanguage(DefaultLanguage)
+	cases := map[string]string{
+		"Focus table":                         "聚焦表格",
+		"Quit":                                "退出",
+		"Search":                              "搜索",
+		"Check for updates / upgrade LazySQL": "检查更新 / 升级 LazySQL",
+		"Export to CSV":                       "导出为 CSV",
+		"Toggle value menu to put values like NULL, EMPTY or DEFAULT": "切换值菜单以填入 NULL、EMPTY 或 DEFAULT",
+	}
+	for key, want := range cases {
+		if got := T(key); got != want {
+			t.Errorf(`T(%q) = %q, want %q`, key, got, want)
+		}
+	}
+}
