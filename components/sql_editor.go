@@ -1184,37 +1184,19 @@ func (e *SQLEditor) acceptCompletion() {
 	e.pushUndo()
 	completion := e.acItems[e.acSelected].Text
 
-	// Find start of the word being completed. For "table.col|" the whole
-	// "table." segment plus the (possibly empty) column prefix is replaced,
-	// so Enter works even when the cursor sits right after the dot.
+	// Find the prefix to replace. For "table.col|" only the "col" part is
+	// replaced, so the "table." qualifier is kept and the result reads
+	// "table.column" (e.g. "tenant_llm.id"). With an empty prefix (cursor
+	// right after the dot) the completion is simply inserted at the cursor.
 	text := e.GetText()
 	cursorPos := e.cursorByteOffset()
-	prefix, tableName := extractCompletionContext(text, cursorPos)
-	if tableName == "" {
-		// Fall back to the hint captured when the popup was triggered (async
-		// column loading can leave the cursor in the same place but no dot).
-		tableName = e.acTableHint
-	}
-	if prefix == "" && tableName == "" {
-		e.acVisible = false
-		return
-	}
+	prefix, _ := extractCompletionContext(text, cursorPos)
 
 	replaceLen := len(prefix)
-	if tableName != "" {
-		replaceLen = len(tableName) + 1 + len(prefix)
-	}
-
 	suffix := ""
 	if e.cx >= replaceLen {
-		// The whole token (including "table.") is on the current line.
 		suffix = e.lines[e.cy][e.cx:]
 		e.lines[e.cy] = e.lines[e.cy][:e.cx-replaceLen]
-	} else if e.cx >= len(prefix) {
-		// The bare prefix is on this line but the "table." part wraps from a
-		// previous line (rare): replace only the visible prefix.
-		suffix = e.lines[e.cy][e.cx:]
-		e.lines[e.cy] = e.lines[e.cy][:e.cx-len(prefix)]
 	} else {
 		// Prefix spans lines: consume the rest of this line.
 		e.lines[e.cy] = e.lines[e.cy][e.cx:]

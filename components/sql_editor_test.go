@@ -44,8 +44,8 @@ func TestSQLEditorSubscribeAndPublishConcurrently(t *testing.T) {
 }
 
 // TestAutocompleteEnterOnTableQualified ensures Enter accepts a column
-// completion when the cursor sits right after "table." with an empty prefix
-// (previously acceptCompletion bailed out and just closed the popup).
+// completion when the cursor sits right after "table." with an empty prefix,
+// and that the "table." qualifier is preserved (tenant_llm.id, not id).
 func TestAutocompleteEnterOnTableQualified(t *testing.T) {
 	editor := NewSQLEditor("")
 	editor.SetTables([]string{"tenant_llm"})
@@ -61,11 +61,36 @@ func TestAutocompleteEnterOnTableQualified(t *testing.T) {
 		t.Fatalf("expected autocomplete popup with column items, visible=%v items=%d", editor.acVisible, len(editor.acItems))
 	}
 
-	// The first suggested column should replace the whole "tenant_llm." token.
+	// The first suggested column should be inserted after "tenant_llm.".
 	completion := editor.acItems[0].Text
 	editor.acceptCompletion()
 
-	want := "SELECT " + completion + " FROM tenant_llm;"
+	want := "SELECT tenant_llm." + completion + " FROM tenant_llm;"
+	if got := editor.GetText(); got != want {
+		t.Fatalf("after Enter completion: got %q, want %q", got, want)
+	}
+}
+
+// TestAutocompleteEnterKeepsTableQualifier covers the partial-prefix variant
+// "tenant_llm.cre" — only "cre" is replaced, "tenant_llm." stays.
+func TestAutocompleteEnterKeepsTableQualifier(t *testing.T) {
+	editor := NewSQLEditor("")
+	editor.SetTables([]string{"tenant_llm"})
+	editor.SetColumns("tenant_llm", []string{"id", "create_time", "create_date"})
+
+	editor.SetText("SELECT tenant_llm.cre FROM tenant_llm;", true)
+	editor.cx = len("SELECT tenant_llm.cre")
+
+	editor.acTableHint = ""
+	editor.triggerAutocomplete()
+	if !editor.acVisible || len(editor.acItems) == 0 {
+		t.Fatalf("expected autocomplete popup, visible=%v items=%d", editor.acVisible, len(editor.acItems))
+	}
+
+	completion := editor.acItems[0].Text
+	editor.acceptCompletion()
+
+	want := "SELECT tenant_llm." + completion + " FROM tenant_llm;"
 	if got := editor.GetText(); got != want {
 		t.Fatalf("after Enter completion: got %q, want %q", got, want)
 	}
@@ -92,8 +117,33 @@ func TestAutocompleteEnterViaInputHandler(t *testing.T) {
 	handler := editor.InputHandler()
 	handler(tcell.NewEventKey(tcell.KeyEnter, 0, tcell.ModNone), func(p tview.Primitive) {})
 
-	want := "SELECT " + completion + " FROM tenant_llm;"
+	want := "SELECT tenant_llm." + completion + " FROM tenant_llm;"
 	if got := editor.GetText(); got != want {
 		t.Fatalf("after Enter via handler: got %q, want %q", got, want)
+	}
+}
+
+// TestAutocompleteEnterBarePrefix ensures a plain (unqualified) prefix is
+// still replaced as before, without a spurious "table." qualifier.
+func TestAutocompleteEnterBarePrefix(t *testing.T) {
+	editor := NewSQLEditor("")
+	editor.SetTables([]string{"tenant_llm"})
+	editor.SetColumns("tenant_llm", []string{"id", "create_time", "create_date"})
+
+	editor.SetText("SELECT cre FROM tenant_llm;", true)
+	editor.cx = len("SELECT cre")
+
+	editor.acTableHint = ""
+	editor.triggerAutocomplete()
+	if !editor.acVisible || len(editor.acItems) == 0 {
+		t.Fatalf("expected autocomplete popup, visible=%v items=%d", editor.acVisible, len(editor.acItems))
+	}
+
+	completion := editor.acItems[0].Text
+	editor.acceptCompletion()
+
+	want := "SELECT " + completion + " FROM tenant_llm;"
+	if got := editor.GetText(); got != want {
+		t.Fatalf("after Enter completion: got %q, want %q", got, want)
 	}
 }
