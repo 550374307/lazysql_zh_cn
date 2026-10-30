@@ -12,6 +12,7 @@ import (
 
 	"github.com/jorgerojas26/lazysql/drivers"
 	"github.com/jorgerojas26/lazysql/internal/i18n"
+	"github.com/jorgerojas26/lazysql/internal/mylogin"
 	"github.com/jorgerojas26/lazysql/models"
 )
 
@@ -212,6 +213,12 @@ func LoadConfig(configFile string) error {
 	for i, conn := range App.config.Connections {
 		if _, err := App.config.AppConfig.EffectiveConnectionPool(conn); err != nil {
 			return fmt.Errorf("invalid connection pool configuration for %q: %w", conn.Name, err)
+		}
+		if conn.LoginPath != "" {
+			if err := applyLoginPath(&App.config.Connections[i]); err != nil {
+				return fmt.Errorf("connection %q: %w", conn.Name, err)
+			}
+			conn = App.config.Connections[i]
 		}
 		App.config.Connections[i].URL = parseConfigURL(&conn)
 	}
@@ -573,22 +580,78 @@ func parseConfigURL(conn *models.Connection) string {
 		return conn.URL
 	}
 
-	// Only MSSQL is supported for now.
-	if conn.Provider != drivers.DriverMSSQL {
-		return conn.URL
+	switch conn.Provider {
+	case drivers.DriverMSSQL:
+		user := url.QueryEscape(conn.Username)
+		pass := url.QueryEscape(conn.Password)
+
+		return fmt.Sprintf(
+			"%s://%s:%s@%s:%s?database=%s%s",
+			conn.Provider,
+			user,
+			pass,
+			conn.Hostname,
+			conn.Port,
+			conn.DBName,
+			conn.URLParams,
+		)
+	case drivers.DriverMySQL:
+		// Build a DSN from the parsed fields. This also supports connections
+		// configured with only login_path (+ dbname): user/password/host/port
+		// were filled in from the encrypted MySQL login file.
+		if conn.Username == "" || conn.Hostname == "" {
+			return conn.URL
+		}
+		user := url.QueryEscape(conn.Username)
+		pass := url.QueryEscape(conn.Password)
+		port := conn.Port
+		if port == "" {
+			port = "3306"
+		}
+		db := conn.DBName
+		path := db
+		if !strings.HasPrefix(path, "/") {
+			path = "/" + path
+		}
+		return fmt.Sprintf("mysql://%s:%s@%s:%s%s%s", user, pass, conn.Hostname, port, path, conn.URLParams)
 	}
+	return conn.URL
+}
 
-	user := url.QueryEscape(conn.Username)
-	pass := url.QueryEscape(conn.Password)
+// applyLoginPath fills empty credential/host fields of a connection from the
+// named entry in the MySQL encrypted login file. Explicitly configured values
+// always win, matching the mysql client where command-line options override
+// --login-path.
+func applyLoginPath(conn *models.Connection) error {
+	path, err := mylogin.DefaultPath()
+	if err != nil {
+		return err
+	}
+	return applyLoginPathFrom(conn, path)
+}
 
-	return fmt.Sprintf(
-		"%s://%s:%s@%s:%s?database=%s%s",
-		conn.Provider,
-		user,
-		pass,
-		conn.Hostname,
-		conn.Port,
-		conn.DBName,
-		conn.URLParams,
-	)
+// applyLoginPathFrom is applyLoginPath with an explicit login file path,
+// separated for testability.
+func applyLoginPathFrom(conn *models.Connection, path string) error {
+	file, err := mylogin.Load(path)
+	if err != nil {
+		return fmt.Errorf("reading MySQL login file %s: %w", path, err)
+	}
+	entry, ok := file.Get(conn.LoginPath)
+	if !ok {
+		return fmt.Errorf("login path %q not found in %s", conn.LoginPath, path)
+	}
+	if conn.Username == "" {
+		conn.Username = entry.User
+	}
+	if conn.Password == "" {
+		conn.Password = entry.Password
+	}
+	if conn.Hostname == "" {
+		conn.Hostname = entry.Host
+	}
+	if conn.Port == "" {
+		conn.Port = entry.Port
+	}
+	return nil
 }

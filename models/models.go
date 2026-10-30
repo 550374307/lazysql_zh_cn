@@ -80,6 +80,13 @@ type Connection struct {
 	DBName    string `toml:",omitempty"`
 	URLParams string `toml:",omitempty"`
 
+	// LoginPath names an entry in the MySQL encrypted login file
+	// (~/.mylogin.cnf or %APPDATA%\MySQL\.mylogin.cnf) written by
+	// mysql_config_editor. When set, credentials from that entry fill any of
+	// the fields above that are left empty, so passwords never have to be
+	// stored in this plaintext config file.
+	LoginPath string `toml:"login_path,omitempty"`
+
 	ReadOnly bool `toml:",omitempty"`
 
 	// Pool limits are optional per-connection overrides. A nil value inherits
