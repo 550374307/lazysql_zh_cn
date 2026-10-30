@@ -258,6 +258,30 @@ include the strings you want to change. Set `language` to a value other than
 `zh`/`en` (for example `"custom"`) to start from English and let the custom
 file provide the entire UI. The default language is `zh`.
 
+### Where the built-in translations live
+
+The built-in language packs are embedded at compile time:
+
+| File | Role |
+| --- | --- |
+| `internal/i18n/locales/zh.json` | Simplified Chinese pack (default; currently 433 keys) |
+| `internal/i18n/locales/en.json` | English pack (kept as `{}`; every key falls back to the English source string) |
+
+Translation **keys are the English UI strings themselves**, plus three
+prefixed key families rendered at runtime:
+
+| Key kind | Example | Source |
+| --- | --- | --- |
+| Plain UI string | `"Save"`, `"Query failed: %s"` | `i18n.T(...)` / `i18n.Tf(...)` calls in the components |
+| Command name | `"cmd.Quit"`, `"cmd.CopyRowsAs"` | `commands.Command.String()` |
+| Keymap group | `"keymap.group.table"` | group names in `app/keymap.go` |
+| Keybinding description | `"Focus table"`, `"Export to CSV"` | `Bind.Description` in `app/keymap.go` |
+
+To change the default wording of the Chinese UI, edit `zh.json` and rebuild.
+To add a brand-new language, copy the `zh.json` shape (or start from an empty
+file and let the English fallback fill the gaps) and load it at runtime via
+`language_file` — no recompile required.
+
 ### Upgrade notices and in-app upgrades
 
 LazySQL checks the official GitHub repository for a newer stable release in the
