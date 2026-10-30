@@ -5,6 +5,13 @@
   **简体中文** · <a href="README.en.md">English</a>
 </div>
 
+> [!NOTE]
+> **Fork 汉化版说明**
+>
+> - **上游来源**：[LazySQL](https://github.com/jorgerojas26/lazysql)（作者 Jorge Rojas）
+> - **本 fork 定位**：仅实现 **I18N 国际化翻译**（默认简体中文，支持中/英切换与自定义语言文件），**不修改上游的任何功能逻辑**
+> - 上游更新可随时通过 `git fetch upstream` 合并同步
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
