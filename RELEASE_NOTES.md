@@ -1,17 +1,30 @@
-# LazySQL I18N 汉化版 v0.7.1-zh
+# LazySQL I18N 汉化版 v0.7.2-zh
 
-> 本 fork 基于上游 [LazySQL](https://github.com/jorgerojas26/lazysql)（jorgerojas26），仅实现 I18N 国际化翻译（默认简体中文、中英切换、自定义语言文件），未修改上游功能逻辑。
+> 本 fork 基于上游 [LazySQL](https://github.com/jorgerojas26/lazysql)（jorgerojas26），主线为 I18N 国际化翻译（默认简体中文、中英切换、自定义语言文件）；本次按需求新增 MySQL `--login-path` 支持（见下），未修改其他上游功能逻辑。
 
-## 本次修复
+## 本次新增：MySQL --login-path 支持（免明文密码）
 
-- **补全框中文乱码**：SQL 编辑器补全弹窗的描述列此前按字节索引渲染，中文字符的 UTF-8 多字节被逐字节拆开显示（如"字段"显示为 `å æ®µ`）。已改为按 `[]rune` 索引绘制，中文正常显示。
-- **回车 / Tab 无法选中补全候选**：在表限定场景（如 `SELECT tenant_llm.`）下回车此前只会关闭弹窗、不插入任何内容。已修复为可正常接受补全。
-- **表限定补全丢失表名前缀**：`SELECT tenant_llm.` 选中列后此前会变成 `SELECT id`，已修复为保留表名限定符，结果为 `SELECT tenant_llm.id`；`tenant_llm.cre` 选中后为 `tenant_llm.create_time`。
-- **Tab 键被误判为下移**：`KeyTab` 同时命中"向下移动"与"选择"两个分支，导致 Tab 永远只移动候选而不确认。已移除冲突，Tab 与 Enter 行为一致。
-- 新增 4 个补全回归测试（表限定空前缀、带前缀、真实 InputHandler 回车、无点前缀不回归）。
+LazySQL 现在可以直接读取 `mysql_config_editor` 加密保存的登录文件（`~/.mylogin.cnf`，Windows 为 `%APPDATA%\MySQL\.mylogin.cnf`），数据库密码无需再以明文写入 `.lazysql.toml`。
 
-## 特性
+- **配置引用**：`[[database]]` 条目新增 `LoginPath` 字段，留空的 `user/password/host/port` 从加密文件自动补齐；显式配置的字段优先（与 `mysql` 客户端行为一致）。
+- **启动自动发现（免配置）**：启动时自动扫描登录文件，其中**每一个** login-path 条目直接显示为一条 MySQL 连接，选中即可连接，无需手写 `[[database]]`。
+- **自动条目不落盘**：自动发现的连接仅存在于会话内存，不会被写回配置文件；配置中已有同名 `LoginPath` 时以显式条目为准。
+- **细节**：缺 host 默认 `localhost`、缺端口默认 `3306`；带 `socket` 且无 host 时走 unix socket 连接；登录文件缺失/损坏时静默跳过，不影响启动。
+- 实现为纯 Go（`internal/mylogin` 包），AES-128-ECB + PKCS#7、20 字节 key XOR 折叠算法与 MySQL 8.0 官方源码（`my_aes.cc` / `mysql_config_editor.cc`）逐行核对一致，并通过独立实现交叉验证。
+- 新增 11 个测试（mylogin 解密 roundtrip / deriveKey 向量 / 补齐 / 显式优先 / 缺失报错 / MySQL DSN / socket / 自动发现 / 去重 / 不落盘等）。
 
-- 默认简体中文；支持中 / 英切换（`--config` 或 `.lazysql.toml` 中设置 `language`）。
-- 支持自定义语言文件（`language_file` 配置，JSON 键值覆盖内置翻译，支持 `${env:VAR}` 展开）。
-- README 中文化（默认显示中文），并标注 fork 上游来源。
+## 使用示例
+
+```bash
+# 1. 生成加密凭据（密码不进 shell 历史）
+mysql_config_editor set --login-path=prod --host=127.0.0.1 --port=3306 --user=root --password
+
+# 2. 直接启动 lazysql：连接选择器中会出现 "prod"，选中即可连接
+#    （也支持在 .lazysql.toml 显式引用：LoginPath = "prod"）
+```
+
+## 历史修复（v0.7.1-zh）
+
+- 补全框中文乱码（字节索引 → `[]rune` 索引渲染）。
+- 回车 / Tab 无法选中补全候选；Tab 与 Enter 行为一致。
+- 表限定补全保留表名前缀（`tenant_llm.` + Enter → `tenant_llm.id`）。
