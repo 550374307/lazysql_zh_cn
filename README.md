@@ -228,6 +228,13 @@ MySQL 的 `mysql_config_editor` 工具可以把连接凭据混淆加密后保存
 
    该加密仅用于防止凭据被直接读取（与 MySQL 官方说明一致，并非强加密）；`~/.mylogin.cnf` 自身也应保持仅当前用户可读。
 
+**自动发现（免配置）**：LazySQL 启动时会自动扫描 `~/.mylogin.cnf`（Windows 为 `%APPDATA%\MySQL\.mylogin.cnf`），把里面**每一个** login-path 条目直接作为一条 MySQL 连接显示在连接选择器里——无需在 `.lazysql.toml` 里写 `[[database]]`。选中即可连接，连接后侧边栏默认列出该用户有权限的全部数据库。规则：
+
+- 自动条目只在会话内存中，**不会**被写回配置文件；
+- 若配置里已有同名 `LoginPath` 的显式条目，以显式条目为准（自动条目跳过）；
+- 条目未指定 host 时默认 `localhost`、端口默认 `3306`；条目带 `socket` 且未指定 host 时走 unix socket 连接；
+- 登录文件缺失或无法解析时静默跳过，不影响启动。
+
 数据库条目可以用 `max_open_connections` 和 `max_idle_connections` 覆盖连接池设置。省略的值继承应用设置；显式的 `0` 使用 LazySQL 默认值 `8`。无效组合（例如空闲连接数大于打开连接数）会被拒绝。SQLite 始终使用一条打开连接和一条空闲连接（`1/1`）以保持内存数据库行为，忽略通用连接池设置。
 
 `DBName` 字段（可选）控制打开连接时侧边栏树的填充方式：

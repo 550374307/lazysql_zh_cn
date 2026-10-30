@@ -221,6 +221,13 @@ MySQL's `mysql_config_editor` utility stores connection credentials in an obfusc
 
    Note the obfuscation is meant to deter casual reading (as MySQL's own docs state), not to be strong encryption; keep `~/.mylogin.cnf` readable by your user only.
 
+**Auto-discovery (zero config)** : on startup LazySQL scans `~/.mylogin.cnf` (`%APPDATA%\MySQL\.mylogin.cnf` on Windows) and adds **every** login path as a MySQL connection in the picker — no `[[database]]` row needed. Select it to connect; the sidebar then lists all databases the user has privileges on. Rules:
+
+- Auto rows live in memory only and are **never** written back to the config file;
+- an explicit row referencing the same `LoginPath` wins (the auto row is skipped);
+- missing host defaults to `localhost`, missing port to `3306`; a `socket` entry without a host connects over the unix socket;
+- a missing or undecodable login file is silently ignored, startup is unaffected.
+
 Database entries may override the connection pool with `max_open_connections` and `max_idle_connections`. Omitted values inherit the application settings; an explicit `0` uses LazySQL's default of `8`. Invalid combinations (for example, idle connections greater than open connections) are rejected. SQLite always uses one open and one idle connection (`1/1`) to preserve in-memory database behavior, ignoring the general pool settings.
 
 The `DBName` field (optional) controls how the sidebar tree is populated when a connection is opened:

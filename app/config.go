@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"sort"
 	"strings"
 
 	"github.com/pelletier/go-toml/v2"
@@ -223,6 +224,13 @@ func LoadConfig(configFile string) error {
 		App.config.Connections[i].URL = parseConfigURL(&conn)
 	}
 
+	// Append one connection per login path in the MySQL login file so
+	// mysql_config_editor users see their entries in the picker without
+	// declaring [[database]] rows. Best-effort: missing file is ignored.
+	if App.config.Connections, err = discoverLoginPathConnections(App.config.Connections, ""); err != nil {
+		return err
+	}
+
 	if err := ApplyKeymapConfig(App.config.Keymaps); err != nil {
 		return err
 	}
@@ -280,6 +288,15 @@ func InitializeI18n(config *models.AppConfig) error {
 // the local config when that file defines [[database]] (it replaces the global
 // list), otherwise the global config.
 func (c *Config) SaveConnections(connections []models.Connection) error {
+	// Auto-discovered login-path connections are session-only and must never
+	// be persisted into the config file.
+	persistent := make([]models.Connection, 0, len(connections))
+	for _, conn := range connections {
+		if !conn.Ephemeral {
+			persistent = append(persistent, conn)
+		}
+	}
+
 	configFile := c.ConfigFile
 	toLocal := false
 	var configTable map[string]any
@@ -302,7 +319,7 @@ func (c *Config) SaveConnections(connections []models.Connection) error {
 	}
 
 	var value any
-	if len(connections) == 0 {
+	if len(persistent) == 0 {
 		value = nil
 		if toLocal {
 			// Keep an empty list so the local file still replaces the global one.
@@ -310,7 +327,7 @@ func (c *Config) SaveConnections(connections []models.Connection) error {
 		}
 	} else {
 		var err error
-		value, err = preserveConnectionTemplates(configTable["database"], connections)
+		value, err = preserveConnectionTemplates(configTable["database"], persistent)
 		if err != nil {
 			return err
 		}
@@ -318,6 +335,8 @@ func (c *Config) SaveConnections(connections []models.Connection) error {
 	if err := saveConfigTable(configFile, configTable, "database", value); err != nil {
 		return err
 	}
+	// Keep the full in-memory list (including auto-discovered login paths) so
+	// the picker does not change mid-session; only persistent rows were saved.
 	c.Connections = connections
 	return nil
 }
@@ -599,11 +618,25 @@ func parseConfigURL(conn *models.Connection) string {
 		// Build a DSN from the parsed fields. This also supports connections
 		// configured with only login_path (+ dbname): user/password/host/port
 		// were filled in from the encrypted MySQL login file.
-		if conn.Username == "" || conn.Hostname == "" {
+		if conn.Username == "" {
 			return conn.URL
 		}
 		user := url.QueryEscape(conn.Username)
 		pass := url.QueryEscape(conn.Password)
+		if conn.Socket != "" && conn.Hostname == "" {
+			// Prefer a unix socket when the login path provides one and no
+			// TCP host was configured (mysql defaults to the local socket).
+			db := conn.DBName
+			path := db
+			if !strings.HasPrefix(path, "/") {
+				path = "/" + path
+			}
+			return fmt.Sprintf("mysql://%s:%s@unix(%s)%s%s", user, pass, conn.Socket, path, conn.URLParams)
+		}
+		host := conn.Hostname
+		if host == "" {
+			host = "localhost"
+		}
 		port := conn.Port
 		if port == "" {
 			port = "3306"
@@ -613,9 +646,67 @@ func parseConfigURL(conn *models.Connection) string {
 		if !strings.HasPrefix(path, "/") {
 			path = "/" + path
 		}
-		return fmt.Sprintf("mysql://%s:%s@%s:%s%s%s", user, pass, conn.Hostname, port, path, conn.URLParams)
+		return fmt.Sprintf("mysql://%s:%s@%s:%s%s%s", user, pass, host, port, path, conn.URLParams)
 	}
 	return conn.URL
+}
+
+// discoverLoginPathConnections appends one in-memory connection per login path
+// found in the MySQL encrypted login file, so users do not have to declare
+// [[database]] entries for credentials they already store with
+// mysql_config_editor. Discovery is best-effort: a missing or unreadable login
+// file never blocks startup, and entries already referenced by an explicit
+// LoginPath config are skipped (the explicit row wins). Pass loginFilePath=""
+// to use the default location (~/.mylogin.cnf or %APPDATA%\MySQL).
+func discoverLoginPathConnections(conns []models.Connection, loginFilePath string) ([]models.Connection, error) {
+	path := loginFilePath
+	if path == "" {
+		defaultPath, err := mylogin.DefaultPath()
+		if err != nil {
+			return conns, nil
+		}
+		path = defaultPath
+	}
+
+	file, err := mylogin.Load(path)
+	if err != nil {
+		// No login file (or undecodable) is not an error: just no auto rows.
+		return conns, nil
+	}
+
+	explicit := make(map[string]bool, len(conns))
+	for _, conn := range conns {
+		if conn.LoginPath != "" {
+			explicit[conn.LoginPath] = true
+		}
+	}
+
+	names := make([]string, 0, len(file.Paths))
+	for name := range file.Paths {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+
+	for _, name := range names {
+		if explicit[name] {
+			continue
+		}
+		entry := file.Paths[name]
+		auto := models.Connection{
+			Name:      name,
+			Provider:  drivers.DriverMySQL,
+			Username:  entry.User,
+			Password:  entry.Password,
+			Hostname:  entry.Host,
+			Port:      entry.Port,
+			Socket:    entry.Socket,
+			LoginPath: name,
+			Ephemeral: true,
+		}
+		auto.URL = parseConfigURL(&auto)
+		conns = append(conns, auto)
+	}
+	return conns, nil
 }
 
 // applyLoginPath fills empty credential/host fields of a connection from the

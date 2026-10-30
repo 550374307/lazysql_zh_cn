@@ -37,6 +37,10 @@ URL = "mysql://lazysql:@@PASSWORD@@@127.0.0.1:3307/lazysql_test?parseTime=true"
 #LoginPath = "docker-mysql"
 #DBName = "lazysql_test"
 
+# On startup LazySQL also auto-discovers every login path present in
+# ~/.mylogin.cnf and shows it in the connection picker without any
+# [[database]] row (session-only; never written back to this file).
+
 [[database]]
 Name = "Docker PostgreSQL"
 Provider = "postgres"

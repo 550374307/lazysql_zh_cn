@@ -79,6 +79,7 @@ type Connection struct {
 	Port      string `toml:",omitempty"`
 	DBName    string `toml:",omitempty"`
 	URLParams string `toml:",omitempty"`
+	Socket    string `toml:",omitempty"`
 
 	// LoginPath names an entry in the MySQL encrypted login file
 	// (~/.mylogin.cnf or %APPDATA%\MySQL\.mylogin.cnf) written by
@@ -86,6 +87,11 @@ type Connection struct {
 	// the fields above that are left empty, so passwords never have to be
 	// stored in this plaintext config file.
 	LoginPath string `toml:"login_path,omitempty"`
+
+	// Ephemeral marks connections auto-discovered at startup (e.g. every
+	// login path in the MySQL login file) that exist only in memory and must
+	// never be written back to the config file.
+	Ephemeral bool `toml:"-"`
 
 	ReadOnly bool `toml:",omitempty"`
 
